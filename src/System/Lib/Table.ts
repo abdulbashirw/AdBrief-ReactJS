@@ -1,4 +1,13 @@
-import { createRef, Dispatch, RefObject, SetStateAction, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  createRef,
+  Dispatch,
+  RefObject,
+  SetStateAction,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   Button,
   Center,
@@ -19,103 +28,118 @@ import {
   Space,
   Text,
   TextField,
-} from './Widgets'
-import { useDebounce } from '@uidotdev/usehooks'
-import { ThemeState } from '@/store/slices/theme.slice.ts'
-import { useTheme } from '@/hooks/useTheme'
+} from "./Widgets";
+import { useDebounce } from "@uidotdev/usehooks";
+import { ThemeState } from "@/store/slices/theme.slice.ts";
+import { useTheme } from "@/hooks/useTheme";
 
 export type Field = {
-  width?: number | `${number}%`
-  title?: string
-  align?: 'start' | 'center' | 'end'
-}
+  width?: number | `${number}%`;
+  title?: string;
+  align?: "start" | "center" | "end";
+};
 
 interface TableWidgetProps {
   /**
    * Name of the table widget.
    */
-  name?: string
+  name?: string;
 
   /**
    * Mutable ref object to manage state and actions.
    */
-  ref?: RefObject<any>
+  ref?: RefObject<any>;
 
   /**
    * Array of field objects that describe the table structure.
    * Each field includes a width and title.
    */
-  fields: Field[]
+  fields: Field[];
 
   /**
    * Array of data objects for the table's rows.
    */
-  data?: Record<string, any>[]
+  data?: Record<string, any>[];
 
   pagination?: {
-    total: number
-    totalPage: number
-    page: number
-    perRows?: number
-    onPageChange: (options: { perRows: number; page: number }) => Promise<void>
-    onPerPageChange: (options: { perRows: number; page: number }) => Promise<void>
-  }
+    total: number;
+    totalPage: number;
+    page: number;
+    perRows?: number;
+    onPageChange: (options: { perRows: number; page: number }) => Promise<void>;
+    onPerPageChange: (options: {
+      perRows: number;
+      page: number;
+    }) => Promise<void>;
+  };
 
   /**
    * Determines if the toolbar should be displayed.
    */
-  toolbar?: boolean
+  toolbar?: boolean;
 
   /**
    * Enables or disables checkboxes in the table.
    */
-  useCheckbox?: boolean
+  useCheckbox?: boolean;
 
-  multiSelect?: boolean
+  multiSelect?: boolean;
 
   /**
    * Determines if the header should be displayed.
    */
-  header?: boolean
+  header?: boolean;
 
-  onRefresh?: () => Promise<void>
-  onSearchChange?: (params: { search: string; page: number; perRows: number }) => Promise<void>
-  searchDebounceDelay?: number
-  onAddBtnClick?: (params: { page: number; perRows: number }) => void
+  onRefresh?: () => Promise<void>;
+  onSearchChange?: (params: {
+    search: string;
+    page: number;
+    perRows: number;
+  }) => Promise<void>;
+  searchDebounceDelay?: number;
+  onAddBtnClick?: (params: { page: number; perRows: number }) => void;
 }
 
 // For checking render time during state changes
-let times = 0
+let times = 0;
 
 export default function Table(props: TableWidgetProps) {
-  props.ref = props.ref || useRef(null)
+  props.ref = props.ref || useRef(null);
 
-  const headerRef = useRef(null)
-  const splitRef = useRef(null)
-  const bodyRef = useRef(null)
-  const bodyRowRefs = useRef<RefObject<HTMLDivElement | null>[]>([])
+  const headerRef = useRef(null);
+  const splitRef = useRef(null);
+  const bodyRef = useRef(null);
+  const bodyRowRefs = useRef<RefObject<HTMLDivElement | null>[]>([]);
 
-  const { colors } = useTheme()
-  const [isMounted, setMounted] = useState(false)
-  const [focus, setFocus] = useState(false)
-  const [search, setSearch] = useState('')
-  const [checkIndexes, setCheckIndexes] = useState<boolean[]>(props.data?.map(() => false) || [])
-  const [useCheckbox, setUseCheckbox] = useState(props.useCheckbox || false)
-  const [disabled, setDisabled] = useState(false)
-  const [header, setHeader] = useState(true)
-  const [toolbar, setToolbar] = useState(props.toolbar || false)
-  const [pagination, setPagination] = useState(true)
-  const [perRows, setPerRows] = useState(props.pagination?.perRows || 10)
-  const [page, setPage] = useState(props.pagination?.page || 1)
+  const { colors } = useTheme();
+  const [isMounted, setMounted] = useState(false);
+  const [focus, setFocus] = useState(false);
+  const [search, setSearch] = useState("");
+  const [checkIndexes, setCheckIndexes] = useState<boolean[]>(
+    props.data?.map(() => false) || [],
+  );
+  const [useCheckbox, setUseCheckbox] = useState(props.useCheckbox || false);
+  const [disabled, setDisabled] = useState(false);
+  const [header, setHeader] = useState(true);
+  const [toolbar, setToolbar] = useState(props.toolbar || false);
+  const [pagination, setPagination] = useState(true);
+  const [perRows, setPerRows] = useState(props.pagination?.perRows || 10);
+  const [page, setPage] = useState(props.pagination?.page || 1);
 
-  const searchDebounced = useDebounce(search, props.searchDebounceDelay || 300)
+  const searchDebounced = useDebounce(search, props.searchDebounceDelay || 300);
 
-  const fields = useMemo(() => props.fields || [], [props.fields])
-  const datastore = useMemo(() => props.data || [], [props.data])
-  const allChecked = useMemo(() => checkIndexes.every(Boolean), [checkIndexes])
-  const someChecked = useMemo(() => checkIndexes.some(Boolean), [checkIndexes])
-  const indeterminate = useMemo(() => someChecked && !allChecked, [someChecked, allChecked])
-  const isSelectOne = useMemo(() => checkIndexes.filter(Boolean).length === 1, [checkIndexes])
+  const fields = useMemo(() => props.fields || [], [props.fields]);
+  const datastore = useMemo(() => props.data || [], [props.data]);
+  const allChecked = useMemo(() => checkIndexes.every(Boolean), [checkIndexes]);
+  const someChecked = useMemo(() => checkIndexes.some(Boolean), [checkIndexes]);
+  const indeterminate = useMemo(
+    () => someChecked && !allChecked,
+    [someChecked, allChecked],
+  );
+  const isSelectOne = useMemo(
+    () => checkIndexes.filter(Boolean).length === 1,
+    [checkIndexes],
+  );
 
   if (props.ref) {
     props.ref.current = {
@@ -127,85 +151,98 @@ export default function Table(props: TableWidgetProps) {
       showPagination: () => setPagination(true),
       setFocus: (value: boolean) => setFocus(value),
       setSearch: (value: string) => setSearch(value),
-      setCheckIndexes: (value: ((prevState: boolean[]) => boolean[]) | boolean[]) => {
+      setCheckIndexes: (
+        value: ((prevState: boolean[]) => boolean[]) | boolean[],
+      ) => {
         if (Array.isArray(value)) {
-          setCheckIndexes(value)
-        } else if (typeof value === 'function') {
-          setCheckIndexes(prevState => value(prevState))
+          setCheckIndexes(value);
+        } else if (typeof value === "function") {
+          setCheckIndexes((prevState) => value(prevState));
         }
       },
       setCheckAll: (value: ((prevState: boolean) => boolean) | boolean) => {
-        if (typeof value === 'boolean') {
-          setCheckIndexes(prevState => prevState.map(() => value))
+        if (typeof value === "boolean") {
+          setCheckIndexes((prevState) => prevState.map(() => value));
         } else {
-          setCheckIndexes(prevState => prevState.map(() => value(allChecked)))
+          setCheckIndexes((prevState) =>
+            prevState.map(() => value(allChecked)),
+          );
         }
       },
       setUseCheckbox: (value: boolean) => setUseCheckbox(value),
       setCheckHeader: (value: boolean) => {
-        setCheckIndexes(prevState => prevState.map(() => value))
+        setCheckIndexes((prevState) => prevState.map(() => value));
       },
       setPerRows: (value: number) => setPerRows(value),
       setPage: (value: number) => setPage(value),
       getData: () => datastore,
-    }
+    };
   }
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
-    if (!isMounted) return
-    ;(async () => {
+    if (!isMounted) return;
+    (async () => {
       if (props.pagination) {
-        setDisabled(true)
-        props.pagination.onPageChange({ page, perRows }).finally(() => setDisabled(false))
+        setDisabled(true);
+        props.pagination
+          .onPageChange({ page, perRows })
+          .finally(() => setDisabled(false));
       }
-    })()
-  }, [page])
+    })();
+  }, [page]);
 
   useEffect(() => {
-    if (!isMounted) return
-    ;(async () => {
+    if (!isMounted) return;
+    (async () => {
       if (props.pagination) {
-        setDisabled(true)
-        await props.pagination.onPerPageChange({ page, perRows }).finally(() => setDisabled(false))
+        setDisabled(true);
+        await props.pagination
+          .onPerPageChange({ page, perRows })
+          .finally(() => setDisabled(false));
       }
-    })()
-  }, [perRows])
+    })();
+  }, [perRows]);
 
   useEffect(() => {
-    if (!isMounted) return
-    ;(async () => {
+    if (!isMounted) return;
+    (async () => {
       if (props.onSearchChange) {
-        setDisabled(true)
-        await props.onSearchChange({ search, page, perRows }).finally(() => setDisabled(false))
+        setDisabled(true);
+        await props
+          .onSearchChange({ search, page, perRows })
+          .finally(() => setDisabled(false));
       }
-    })()
-  }, [searchDebounced])
+    })();
+  }, [searchDebounced]);
 
   // Update checkIndexes whenever data size changed
   useEffect(() => {
     if (datastore.length !== checkIndexes.length) {
-      setCheckIndexes(prevState => {
+      setCheckIndexes((prevState) => {
         if (datastore.length > prevState.length) {
-          return [...prevState, ...Array(datastore.length - prevState.length).fill(false)]
+          return [
+            ...prevState,
+            ...Array(datastore.length - prevState.length).fill(false),
+          ];
         }
-        return Array(datastore.length).fill(indeterminate)
-      })
+        return Array(datastore.length).fill(indeterminate);
+      });
     }
-  }, [datastore.length, checkIndexes.length])
+  }, [datastore.length, checkIndexes.length]);
 
   // Checking render times when state change
-  console.log('Table Rendered: ', ++times)
+  console.log("Table Rendered: ", ++times);
 
   return Root({
     theme: colors,
-    height: 'auto',
+    height: "auto",
     child: Column({
-      height: 'unset',
-      color: 'theme.background',
+      height: "unset",
+      color: "theme.background",
       children: [
         //TOOLBAR
         !toolbar
@@ -258,10 +295,18 @@ export default function Table(props: TableWidgetProps) {
         //PAGINATION
         !pagination
           ? null
-          : Pagination({ pagination: props.pagination, page, setPage, perRows, setPerRows, disabled, datastore }),
+          : Pagination({
+              pagination: props.pagination,
+              page,
+              setPage,
+              perRows,
+              setPerRows,
+              disabled,
+              datastore,
+            }),
       ],
     }),
-  }).builder()
+  }).builder();
 }
 
 const Toolbar = ({
@@ -278,87 +323,89 @@ const Toolbar = ({
   focus,
   setFocus,
 }: {
-  colors: any
-  onRefresh?: () => Promise<void>
-  onAddBtnClick?: (params: { page: number; perRows: number }) => void
-  page: number
-  perRows: number
-  isSelectOne: boolean
-  focus: boolean
-  search: string
-  disabled: boolean
-  setFocus: Dispatch<SetStateAction<boolean>>
-  setSearch: Dispatch<SetStateAction<string>>
-  setDisabled: Dispatch<SetStateAction<boolean>>
+  colors: any;
+  onRefresh?: () => Promise<void>;
+  onAddBtnClick?: (params: { page: number; perRows: number }) => void;
+  page: number;
+  perRows: number;
+  isSelectOne: boolean;
+  focus: boolean;
+  search: string;
+  disabled: boolean;
+  setFocus: Dispatch<SetStateAction<boolean>>;
+  setSearch: Dispatch<SetStateAction<string>>;
+  setDisabled: Dispatch<SetStateAction<boolean>>;
 }) =>
   Container({
     height: 50,
     child: Row({
-      alignItems: 'center',
+      alignItems: "center",
       children: [
         onRefresh
           ? Container({
               width: 60,
               child: Click({
-                cursor: disabled ? 'not-allowed' : 'pointer',
+                cursor: disabled ? "not-allowed" : "pointer",
                 click: () => {
-                  if (disabled || !onRefresh) return
-                  setDisabled(true)
-                  onRefresh().finally(() => setDisabled(false))
+                  if (disabled || !onRefresh) return;
+                  setDisabled(true);
+                  onRefresh().finally(() => setDisabled(false));
                 },
                 child: Center({
-                  child: Icon('refresh', { color: disabled ? 'theme.disabled' : undefined }),
+                  child: Icon("refresh", {
+                    color: disabled ? "theme.disabled" : undefined,
+                  }),
                 }),
               }),
             })
           : null,
-        Button('Add Data', {
-          textColor: 'white',
-          icon: 'add',
+        Button("Add Data", {
+          textColor: "white",
+          icon: "add",
           disabled,
           height: 35,
           click: async () => {
-            if (disabled || !onAddBtnClick) return
-            onAddBtnClick({ page, perRows })
+            if (disabled || !onAddBtnClick) return;
+            onAddBtnClick({ page, perRows });
           },
         }),
         Space(10),
         !isSelectOne
           ? null
-          : Button('Edit Data', {
-              textColor: 'white',
-              icon: 'edit',
+          : Button("Edit Data", {
+              textColor: "white",
+              icon: "edit",
               height: 35,
             }),
         Space(10),
         !isSelectOne
           ? null
-          : Button('Delete Data', {
-              textColor: 'white',
-              icon: 'edit',
+          : Button("Delete Data", {
+              textColor: "white",
+              icon: "edit",
               height: 35,
-              backgroundColor: 'theme.error',
+              backgroundColor: "theme.error",
               onClick: () => {
                 Confirm({
                   theme: colors,
-                  title: 'Confirmation',
-                  message: 'Are you sure you want to delete it?',
+                  title: "Confirmation",
+                  message: "Are you sure you want to delete it?",
                   onAccept: (accept: any) => {
-                    console.log('delete', accept)
+                    console.log("delete", accept);
                   },
-                })
+                });
               },
             }),
         Expanded(),
         Container({
           width: focus ? 400 : 200,
-          transition: !focus ? 'unset' : '0.3s width ease-in-out',
+          transition: !focus ? "unset" : "0.3s width ease-in-out",
           child: Center({
             child: TextField({
-              placeholder: 'Search ...',
-              endIcon: Icon(search.length ? 'close' : 'search', {
-                cursor: 'pointer',
-                onClick: () => setSearch(''),
+              placeholder: "Search ...",
+              endIcon: Icon(search.length ? "close" : "search", {
+                cursor: "pointer",
+                onClick: () => setSearch(""),
               }),
               value: search,
               onFocus: () => setFocus(true),
@@ -370,7 +417,7 @@ const Toolbar = ({
         Space(10),
       ],
     }),
-  })
+  });
 
 const TableHeader = ({
   headerRef,
@@ -383,21 +430,21 @@ const TableHeader = ({
   multiSelect,
   fields,
 }: {
-  headerRef: RefObject<HTMLDivElement | null> | null
-  bodyRef: RefObject<HTMLDivElement | null> | null
-  useCheckbox: boolean
-  setCheckIndexes: (newCheckIndexes: boolean[]) => void
-  checkIndexes: boolean[]
-  indeterminate: boolean
-  allChecked: boolean
-  multiSelect?: boolean
-  fields: Field[]
+  headerRef: RefObject<HTMLDivElement | null> | null;
+  bodyRef: RefObject<HTMLDivElement | null> | null;
+  useCheckbox: boolean;
+  setCheckIndexes: (newCheckIndexes: boolean[]) => void;
+  checkIndexes: boolean[];
+  indeterminate: boolean;
+  allChecked: boolean;
+  multiSelect?: boolean;
+  fields: Field[];
 }) =>
   Container({
     height: 40,
-    borderBottom: '1px solid theme.border',
-    display: 'flex',
-    backgroundColor: 'theme.backgroundPaper',
+    borderBottom: "1px solid theme.border",
+    display: "flex",
+    backgroundColor: "theme.backgroundPaper",
     radius: 10,
     child: Row({
       children: [
@@ -407,20 +454,25 @@ const TableHeader = ({
             ? Container({ width: 40 })
             : Container({
                 width: 40,
-                borderRight: '1px solid theme.border',
+                borderRight: "1px solid theme.border",
                 child: Center({
                   child: Checkbox({
                     checked: allChecked,
                     indeterminate,
                     sx: {
-                      '& .MuiSvgIcon-root': {
-                        color: allChecked || indeterminate ? 'theme.textPrimary' : 'theme.primary',
+                      "& .MuiSvgIcon-root": {
+                        color:
+                          allChecked || indeterminate
+                            ? "theme.textPrimary"
+                            : "theme.primary",
                       },
                     },
                     onClick: (e: any) => {
                       if (multiSelect) {
-                        const isChecked = !!e.target.checked
-                        setCheckIndexes(Array(checkIndexes.length).fill(isChecked))
+                        const isChecked = !!e.target.checked;
+                        setCheckIndexes(
+                          Array(checkIndexes.length).fill(isChecked),
+                        );
                       }
                     },
                   }),
@@ -429,38 +481,38 @@ const TableHeader = ({
         Container({
           width: 40,
           child: Center({
-            child: Text('No', { size: 12, weight: 'bold' }),
+            child: Text("No", { size: 12, weight: "bold" }),
           }),
         }),
         Expanded({
           child: SingleChildScrollView({
             ref: headerRef,
-            direction: 'horizontal',
+            direction: "horizontal",
             onScroll: (e: any) => {
               if (bodyRef?.current) {
-                bodyRef.current.scrollLeft = e.target.scrollLeft
+                bodyRef.current.scrollLeft = e.target.scrollLeft;
               }
             },
             child: Row({
-              width: calculateTotal(fields.map(field => field.width || 0)),
+              width: calculateTotal(fields.map((field) => field.width || 0)),
               children: fields.map((field: any) => {
                 return Container({
-                  boxSizing: 'border-box',
+                  boxSizing: "border-box",
                   padding: 10,
-                  display: 'flex',
+                  display: "flex",
                   width: field.width,
                   flex: 1,
-                  alignItems: 'center',
-                  justifyContent: field.align || 'center',
-                  child: Text(field.title, { size: 12, weight: 'bold' }),
-                })
+                  alignItems: "center",
+                  justifyContent: field.align || "center",
+                  child: Text(field.title, { size: 12, weight: "bold" }),
+                });
               }),
             }),
           }),
         }),
       ],
     }),
-  })
+  });
 
 const TableBody = ({
   colors,
@@ -475,70 +527,74 @@ const TableBody = ({
   fields,
   datastore,
 }: {
-  colors: ThemeState['colors']
-  splitRef: RefObject<HTMLDivElement | null> | null
-  headerRef: RefObject<HTMLDivElement | null> | null
-  bodyRef: RefObject<HTMLDivElement | null> | null
-  bodyRowRefs: RefObject<RefObject<HTMLDivElement | null>[]>
-  useCheckbox: boolean
-  multiSelect?: boolean
-  checkIndexes: boolean[]
-  setCheckIndexes: Dispatch<SetStateAction<boolean[]>>
-  fields: Field[]
-  datastore: any[]
+  colors: ThemeState["colors"];
+  splitRef: RefObject<HTMLDivElement | null> | null;
+  headerRef: RefObject<HTMLDivElement | null> | null;
+  bodyRef: RefObject<HTMLDivElement | null> | null;
+  bodyRowRefs: RefObject<RefObject<HTMLDivElement | null>[]>;
+  useCheckbox: boolean;
+  multiSelect?: boolean;
+  checkIndexes: boolean[];
+  setCheckIndexes: Dispatch<SetStateAction<boolean[]>>;
+  fields: Field[];
+  datastore: any[];
 }) => {
-  const numRowRefs = Array.from({ length: datastore.length }).map(() => createRef<HTMLDivElement>())
+  const numRowRefs = Array.from({ length: datastore.length }).map(() =>
+    createRef<HTMLDivElement>(),
+  );
   bodyRowRefs.current = datastore.map(() => {
-    return createRef<HTMLDivElement>()
-  })
+    return createRef<HTMLDivElement>();
+  });
   return Expanded({
     child: Row({
-      cursor: 'pointer',
+      cursor: "pointer",
       children: [
         Container({
           child: SingleChildScrollView({
             ref: splitRef,
             onScroll: (e: any) => {
               if (bodyRef?.current) {
-                bodyRef.current.scrollTop = e.target.scrollTop
+                bodyRef.current.scrollTop = e.target.scrollTop;
               }
             },
             child: Column({
               children: datastore.map((_data: any, x: number) => {
-                const rowRef = bodyRowRefs.current[x]
-                const numRef = numRowRefs[x]
+                const rowRef = bodyRowRefs.current[x];
+                const numRef = numRowRefs[x];
                 return Row({
                   ref: numRef,
-                  color: checkIndexes[x] ? 'theme.active' : 'inherit',
+                  color: checkIndexes[x] ? "theme.active" : "inherit",
                   onMouseEnter: () => {
                     if (rowRef.current && numRef.current && !checkIndexes[x]) {
-                      rowRef.current.style.backgroundColor = colors.hover
-                      numRef.current.style.backgroundColor = colors.hover
+                      rowRef.current.style.backgroundColor = colors.hover;
+                      numRef.current.style.backgroundColor = colors.hover;
                     }
                   },
                   onMouseLeave: () => {
                     if (rowRef.current && numRef.current) {
                       if (checkIndexes[x]) {
-                        rowRef.current.style.backgroundColor = 'theme.active'
-                        numRef.current.style.backgroundColor = 'theme.active'
+                        rowRef.current.style.backgroundColor = "theme.active";
+                        numRef.current.style.backgroundColor = "theme.active";
                       } else {
-                        rowRef.current.style.backgroundColor = 'inherit'
-                        numRef.current.style.backgroundColor = 'inherit'
+                        rowRef.current.style.backgroundColor = "inherit";
+                        numRef.current.style.backgroundColor = "inherit";
                       }
                     }
                   },
                   onClick: () => {
-                    setCheckIndexes(prevCheckIndexes => {
-                      let newCheckIndexes: typeof prevCheckIndexes
+                    setCheckIndexes((prevCheckIndexes) => {
+                      let newCheckIndexes: typeof prevCheckIndexes;
                       if (multiSelect) {
-                        newCheckIndexes = [...prevCheckIndexes]
-                        newCheckIndexes[x] = !newCheckIndexes[x]
+                        newCheckIndexes = [...prevCheckIndexes];
+                        newCheckIndexes[x] = !newCheckIndexes[x];
                       } else {
-                        newCheckIndexes = Array(prevCheckIndexes.length).fill(false)
-                        newCheckIndexes[x] = !prevCheckIndexes[x]
+                        newCheckIndexes = Array(prevCheckIndexes.length).fill(
+                          false,
+                        );
+                        newCheckIndexes[x] = !prevCheckIndexes[x];
                       }
-                      return newCheckIndexes
-                    })
+                      return newCheckIndexes;
+                    });
                   },
                   children: [
                     !useCheckbox
@@ -546,20 +602,22 @@ const TableBody = ({
                       : Container({
                           width: 40,
                           height: 40,
-                          borderRight: '1px solid theme.border',
-                          borderBottom: '1px solid theme.border',
+                          borderRight: "1px solid theme.border",
+                          borderBottom: "1px solid theme.border",
                           child: Center({
                             child: Checkbox({
                               checked: checkIndexes[x],
                               sx: {
-                                '& .MuiSvgIcon-root': {
-                                  color: checkIndexes[x] ? 'theme.textPrimary' : 'theme.primary',
+                                "& .MuiSvgIcon-root": {
+                                  color: checkIndexes[x]
+                                    ? "theme.textPrimary"
+                                    : "theme.primary",
                                 },
                               },
                               onClick: () => {
-                                const newCheckIndexes = [...checkIndexes]
-                                newCheckIndexes[x] = !newCheckIndexes[x]
-                                setCheckIndexes(newCheckIndexes)
+                                const newCheckIndexes = [...checkIndexes];
+                                newCheckIndexes[x] = !newCheckIndexes[x];
+                                setCheckIndexes(newCheckIndexes);
                               },
                             }),
                           }),
@@ -567,13 +625,13 @@ const TableBody = ({
                     Container({
                       width: 40,
                       height: 40,
-                      borderBottom: '1px solid theme.border',
+                      borderBottom: "1px solid theme.border",
                       child: Center({
                         child: Text(`${x + 1}`, { size: 14 }),
                       }),
                     }),
                   ],
-                })
+                });
               }),
             }),
           }),
@@ -583,88 +641,96 @@ const TableBody = ({
             ref: bodyRef,
             onScroll: (e: any) => {
               if (splitRef?.current && headerRef?.current) {
-                splitRef.current.scrollTop = e.target.scrollTop
-                headerRef.current.scrollLeft = e.target.scrollLeft
+                splitRef.current.scrollTop = e.target.scrollTop;
+                headerRef.current.scrollLeft = e.target.scrollLeft;
               }
             },
             child: Container({
-              width: calculateTotal(fields.map(field => field.width || 0)),
-              borderBottom: '0px',
+              width: calculateTotal(fields.map((field) => field.width || 0)),
+              borderBottom: "0px",
               child: Column({
                 children: datastore.map((data: any, x: number) => {
-                  const rowRef = bodyRowRefs.current[x]
-                  const numRef = numRowRefs[x]
+                  const rowRef = bodyRowRefs.current[x];
+                  const numRef = numRowRefs[x];
                   return Row({
                     ref: rowRef,
-                    color: checkIndexes[x] ? 'theme.active' : 'inherit',
-                    width: calculateTotal(fields.map(field => field.width || 0)),
+                    color: checkIndexes[x] ? "theme.active" : "inherit",
+                    width: calculateTotal(
+                      fields.map((field) => field.width || 0),
+                    ),
                     height: 40,
-                    borderBottom: '1px solid theme.border',
+                    borderBottom: "1px solid theme.border",
                     onMouseEnter: () => {
-                      if (rowRef.current && numRef.current && !checkIndexes[x]) {
-                        rowRef.current.style.backgroundColor = colors.hover
-                        numRef.current.style.backgroundColor = colors.hover
+                      if (
+                        rowRef.current &&
+                        numRef.current &&
+                        !checkIndexes[x]
+                      ) {
+                        rowRef.current.style.backgroundColor = colors.hover;
+                        numRef.current.style.backgroundColor = colors.hover;
                       }
                     },
                     onMouseLeave: () => {
                       if (rowRef.current && numRef.current) {
                         if (checkIndexes[x]) {
-                          rowRef.current.style.backgroundColor = 'theme.active'
-                          numRef.current.style.backgroundColor = 'theme.active'
+                          rowRef.current.style.backgroundColor = "theme.active";
+                          numRef.current.style.backgroundColor = "theme.active";
                         } else {
-                          rowRef.current.style.backgroundColor = 'inherit'
-                          numRef.current.style.backgroundColor = 'inherit'
+                          rowRef.current.style.backgroundColor = "inherit";
+                          numRef.current.style.backgroundColor = "inherit";
                         }
                       }
                     },
                     onClick: () => {
-                      setCheckIndexes(prevCheckIndexes => {
-                        let newCheckIndexes: typeof prevCheckIndexes
+                      setCheckIndexes((prevCheckIndexes) => {
+                        let newCheckIndexes: typeof prevCheckIndexes;
                         if (multiSelect) {
-                          newCheckIndexes = [...prevCheckIndexes]
-                          newCheckIndexes[x] = !newCheckIndexes[x]
+                          newCheckIndexes = [...prevCheckIndexes];
+                          newCheckIndexes[x] = !newCheckIndexes[x];
                         } else {
-                          newCheckIndexes = Array(prevCheckIndexes.length).fill(false)
-                          newCheckIndexes[x] = !prevCheckIndexes[x]
+                          newCheckIndexes = Array(prevCheckIndexes.length).fill(
+                            false,
+                          );
+                          newCheckIndexes[x] = !prevCheckIndexes[x];
                         }
-                        return newCheckIndexes
-                      })
+                        return newCheckIndexes;
+                      });
                     },
 
                     attr: {
-                      'data-row-index': x.toString(),
+                      "data-row-index": x.toString(),
                     },
                     children: fields.map((field: any) => {
                       return Container({
-                        display: 'flex',
+                        display: "flex",
                         width: field.width,
                         flex: 1,
                         onContextMenu: (e: any) => {
                           const menu = Menu(e, {
                             anchorOrigin: {
-                              horizontal: 'right',
+                              horizontal: "right",
                             },
                             theme: colors,
                             sx: {
-                              '& .MuiList-root': {
+                              "& .MuiList-root": {
                                 backgroundColor: colors.backgroundPaper,
-                                '& .MuiMenuItem-root:hover': {
+                                "& .MuiMenuItem-root:hover": {
                                   backgroundColor: colors.hover,
                                 },
                               },
                             },
                             children: [
-                              { label: 'Edit', icon: 'edit' },
-                              { label: 'Detail', icon: 'list' },
-                              'Divider',
-                              { label: 'Delete', icon: 'delete' },
+                              { label: "Edit", icon: "edit" },
+                              { label: "Detail", icon: "list" },
+                              "Divider",
+                              { label: "Delete", icon: "delete" },
                             ].map((item: any) => {
-                              if (item === 'Divider') {
-                                return Divider({ margin: '0 10px' })
+                              if (item === "Divider") {
+                                return Divider({ margin: "0 10px" });
                               }
                               return MenuItem({
                                 onClick: () => {
-                                  menu.unMounting()
+                                  menu.unMounting();
                                 },
                                 child: ListItemText({
                                   child: Row({
@@ -680,27 +746,29 @@ const TableBody = ({
                                     ],
                                   }),
                                 }),
-                              })
+                              });
                             }),
-                          })
+                          });
                         },
                         child: Container({
-                          width: '100%',
-                          boxSizing: 'border-box',
-                          display: 'flex',
+                          width: "100%",
+                          boxSizing: "border-box",
+                          display: "flex",
                           padding: 10,
-                          justifyContent: field.align || (field.title == 'No' ? 'center' : 'start'),
+                          justifyContent:
+                            field.align ||
+                            (field.title == "No" ? "center" : "start"),
                           child: Text(data[field.title], {
                             size: 12,
-                            whiteSpace: 'nowrap',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            display: 'inline-block',
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            display: "inline-block",
                           }),
                         }),
-                      })
+                      });
                     }),
-                  })
+                  });
                 }),
               }),
             }),
@@ -708,8 +776,8 @@ const TableBody = ({
         }),
       ],
     }),
-  })
-}
+  });
+};
 
 const Pagination = ({
   pagination,
@@ -720,20 +788,20 @@ const Pagination = ({
   disabled,
   datastore,
 }: {
-  pagination?: { total?: number; totalPage?: number } | null
-  page: number
-  setPage: Dispatch<SetStateAction<number>>
-  perRows: number
-  setPerRows: Dispatch<SetStateAction<number>>
-  disabled: boolean
-  datastore: any[]
+  pagination?: { total?: number; totalPage?: number } | null;
+  page: number;
+  setPage: Dispatch<SetStateAction<number>>;
+  perRows: number;
+  setPerRows: Dispatch<SetStateAction<number>>;
+  disabled: boolean;
+  datastore: any[];
 }) => {
-  const paginationPerRows = [perRows, 'divider', 10, 25, 50, 100]
+  const paginationPerRows = [perRows, "divider", 10, 25, 50, 100];
 
   return Container({
     height: 40,
-    borderTop: '1px solid theme.border',
-    color: 'theme.backgroundPaper',
+    borderTop: "1px solid theme.border",
+    color: "theme.backgroundPaper",
     fontSize: 12,
     radius: 10,
     child: Row({
@@ -745,38 +813,40 @@ const Pagination = ({
         Container({
           width: 65,
           child: Container({
-            cursor: disabled ? 'not-allowed' : 'pointer',
+            cursor: disabled ? "not-allowed" : "pointer",
             height: 20,
             margin: 9,
             radius: 5,
-            border: '1px solid theme.border',
+            border: "1px solid theme.border",
             onClick: (e: any) => {
-              if (disabled) return
+              if (disabled) return;
               const menu = Menu(e, {
                 children: paginationPerRows.map((item: any) => {
-                  if (item === 'divider') {
-                    return Divider({ width: 200 })
+                  if (item === "divider") {
+                    return Divider({ width: 200 });
                   }
                   return MenuItem({
                     onClick: () => {
-                      menu.unMounting()
-                      setPerRows(item)
+                      menu.unMounting();
+                      setPerRows(item);
                     },
                     child: ListItemText({
                       child: Text(item),
                     }),
-                  })
+                  });
                 }),
-              })
+              });
             },
             child: Row({
               center: true,
               children: [
                 Space(10),
                 Expanded({
-                  child: Text(perRows.toString(), { color: disabled ? 'theme.disabled' : undefined }),
+                  child: Text(perRows.toString(), {
+                    color: disabled ? "theme.disabled" : undefined,
+                  }),
                 }),
-                Icon('arrow_drop_down'),
+                Icon("arrow_drop_down"),
                 Space(5),
               ],
             }),
@@ -784,62 +854,79 @@ const Pagination = ({
         }),
         Expanded(),
         Click({
-          width: 'unset',
-          height: 'unset',
+          width: "unset",
+          height: "unset",
           click: () => {
-            if (page <= 1 || disabled) return
-            setPage(page - 1)
+            if (page <= 1 || disabled) return;
+            setPage(page - 1);
           },
-          child: Icon('arrow_back_ios', {
+          child: Icon("arrow_back_ios", {
             size: 14,
-            color: disabled || page <= 1 ? 'theme.disabled' : undefined,
-            cursor: disabled || page <= 1 ? 'not-allowed' : 'pointer',
+            color: disabled || page <= 1 ? "theme.disabled" : undefined,
+            cursor: disabled || page <= 1 ? "not-allowed" : "pointer",
           }),
         }),
         Space(10),
         Text(`${page} of ${pagination?.totalPage ?? 0}`),
         Space(10),
         Click({
-          width: 'unset',
-          height: 'unset',
+          width: "unset",
+          height: "unset",
           click: () => {
-            if (disabled || page >= (pagination?.totalPage ?? 1)) return
-            setPage(page + 1)
+            if (disabled || page >= (pagination?.totalPage ?? 1)) return;
+            setPage(page + 1);
           },
-          child: Icon('arrow_forward_ios', {
+          child: Icon("arrow_forward_ios", {
             size: 14,
-            color: disabled || page >= (pagination?.totalPage ?? 1) ? 'theme.disabled' : undefined,
-            cursor: disabled || page >= (pagination?.totalPage ?? 1) ? 'not-allowed' : 'pointer',
+            color:
+              disabled || page >= (pagination?.totalPage ?? 1)
+                ? "theme.disabled"
+                : undefined,
+            cursor:
+              disabled || page >= (pagination?.totalPage ?? 1)
+                ? "not-allowed"
+                : "pointer",
           }),
         }),
         Space(10),
       ],
     }),
-  })
-}
+  });
+};
 
 export function calculateTotal(values: (number | string)[]): number | string {
-  const hasPercent = values.some(v => typeof v === 'string' && v.trim().endsWith('%'))
-  const hasNumber = values.some(v => typeof v === 'number' || (!isNaN(Number(v)) && !`${v}`.trim().endsWith('%')))
+  const hasPercent = values.some(
+    (v) => typeof v === "string" && v.trim().endsWith("%"),
+  );
+  const hasNumber = values.some(
+    (v) =>
+      typeof v === "number" ||
+      (!isNaN(Number(v)) && !`${v}`.trim().endsWith("%")),
+  );
 
   if (hasPercent && hasNumber) {
     const calcParts = values
-      .filter(v => v !== '' && v !== null)
-      .map(v => (typeof v === 'number' || (!isNaN(Number(v)) && !`${v}`.trim().endsWith('%')) ? Number(v) : v))
-    return `calc(${calcParts.join(' + ')})`
+      .filter((v) => v !== "" && v !== null)
+      .map((v) =>
+        typeof v === "number" ||
+        (!isNaN(Number(v)) && !`${v}`.trim().endsWith("%"))
+          ? Number(v)
+          : v,
+      );
+    return `calc(${calcParts.join(" + ")})`;
   }
 
   if (hasPercent) {
     const total = values.reduce((acc: number, val) => {
-      if (typeof val === 'string' && val.trim().endsWith('%')) {
-        return acc + parseFloat(val)
+      if (typeof val === "string" && val.trim().endsWith("%")) {
+        return acc + parseFloat(val);
       }
-      return acc
-    }, 0)
-    return `${total}%`
+      return acc;
+    }, 0);
+    return `${total}%`;
   }
 
-  const value = values.reduce((acc: number, val) => acc + Number(val), 0)
-  if (value <= 0) return 'auto'
-  return value
+  const value = values.reduce((acc: number, val) => acc + Number(val), 0);
+  if (value <= 0) return "auto";
+  return value;
 }

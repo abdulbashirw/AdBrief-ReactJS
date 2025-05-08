@@ -1,7 +1,6 @@
 import ApiFetcher, { ApiResponse } from "../System/Lib/ApiFetcher";
 
 export default class EditorService {
-
   // GET Request
   public static async getNode(): Promise<ApiResponse> {
     try {
@@ -25,7 +24,10 @@ export default class EditorService {
   }
 
   // PUT Request
-  public static async updateNode(nodeId: string, data: any): Promise<ApiResponse> {
+  public static async updateNode(
+    nodeId: string,
+    data: any,
+  ): Promise<ApiResponse> {
     try {
       const apiFetcher = new ApiFetcher("https://api.server.com/editor");
       return await apiFetcher.put(`/node/${nodeId}`, data);
@@ -36,7 +38,10 @@ export default class EditorService {
   }
 
   // PATCH Request
-  public static async patchNode(nodeId: string, data: any): Promise<ApiResponse> {
+  public static async patchNode(
+    nodeId: string,
+    data: any,
+  ): Promise<ApiResponse> {
     try {
       const apiFetcher = new ApiFetcher("https://api.server.com/editor");
       return await apiFetcher.patch(`/node/${nodeId}`, data);

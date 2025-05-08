@@ -4,22 +4,22 @@ import AbstractAgent from "./AbstractAgent";
 import AgentProps from "./AgentProps";
 
 export default class ChartAgent extends AbstractAgent {
+  name: string = "agent_chart";
 
-    name: string = "agent_chart";
+  addData(data: AgentProps) {
+    this.data = data;
+  }
 
-    addData(data: AgentProps) {
-        this.data = data;
-    }
+  addCore(core: Orchestrator): AbstractAgent {
+    this.core = core;
+    return this;
+  }
 
-    addCore(core: Orchestrator): AbstractAgent {
-        this.core = core;
-        return this;
-    }
-
-    async run() {
-        const engine = new Engine();
-        engine.setSystemMessage([
-            `
+  async run() {
+    const engine = new Engine();
+    engine.setSystemMessage(
+      [
+        `
 Tugas kamu adalah membuat kode untuk menampilkan chart dari data yang ada dengan menggunakan library echarts.
 
 Contoh.
@@ -74,18 +74,23 @@ Jawaban:
     }
   ]
 }`,
-"\`\`\`",
-"",
-"Note:",
-"- Gunakan title pendek saja paling panjang 3 kata.",
-"",
-"chart_instruction:",
-JSON.stringify(this.data!.chart_instruction),
-].join("\n"));
+        "\`\`\`",
+        "",
+        "Note:",
+        "- Gunakan title pendek saja paling panjang 3 kata.",
+        "",
+        "chart_instruction:",
+        JSON.stringify(this.data!.chart_instruction),
+      ].join("\n"),
+    );
 
-        const result = await engine.prompt("Create config options for echarts from data.");
-        console.log("result.parseTextOutputToJson()", result.parseTextOutputToJson());
-        return result.parseTextOutputToJson();
-    }
-
+    const result = await engine.prompt(
+      "Create config options for echarts from data.",
+    );
+    console.log(
+      "result.parseTextOutputToJson()",
+      result.parseTextOutputToJson(),
+    );
+    return result.parseTextOutputToJson();
+  }
 }

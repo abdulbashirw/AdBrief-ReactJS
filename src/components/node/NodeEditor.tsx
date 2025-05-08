@@ -1,33 +1,33 @@
-import React from 'react'
-import { Modal, Root } from '../../System/Lib/Widgets'
-import { DataNode } from '../../contexts/NodeWidgetType'
-import { datawidget } from '../../layouts/editor/EditorRight'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../store'
+import React from "react";
+import { Modal, Root } from "../../System/Lib/Widgets";
+import { DataNode } from "../../contexts/NodeWidgetType";
+import { datawidget } from "../../layouts/editor/EditorRight";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 function Handle(dataNode: DataNode) {
-  const { colors } = useSelector((state: RootState) => state.theme)
-  const nodeWidget = datawidget.filter(x => x.type === dataNode.data.type)[0]
+  const { colors } = useSelector((state: RootState) => state.theme);
+  const nodeWidget = datawidget.filter((x) => x.type === dataNode.data.type)[0];
   return Root({
     theme: colors,
     child: nodeWidget.editor(dataNode),
-  }).builder()
+  }).builder();
 }
 
-let obj: Record<string, any> = {}
+const obj: Record<string, any> = {};
 export default function NodeEditor(data: DataNode): React.ReactElement | null {
-  let props = {
+  const props = {
     ...data,
     close: () => {
-      obj.panel.unMounting()
+      obj.panel.unMounting();
     },
-  }
+  };
 
   obj.panel = Modal({
     fullscreen: true,
-    onClose: () => console.log('Modal Close'),
+    onClose: () => console.log("Modal Close"),
     child: <Handle key={data.id} {...props} />,
-  })
+  });
 
-  return obj.panel
+  return obj.panel;
 }

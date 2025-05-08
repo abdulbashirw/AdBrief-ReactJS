@@ -1,6 +1,5 @@
 import buildingStore from "../System/Lib/Widgets";
 
-
 const codeSample = `
 {
   "tools": [
@@ -41,69 +40,66 @@ export interface Chat {
 }
 
 const useAdbrief = buildingStore(
-  'ai',
+  "ai",
   {
-    system: '',
+    system: "",
     code: codeSample,
-    chat: '',
+    chat: "",
     working: false,
     history: [] as Chat[],
     configChart: [
       {
         title: {
-          text: 'Total Transaksi per Provinsi',
-          left: 'center'
+          text: "Total Transaksi per Provinsi",
+          left: "center",
         },
         tooltip: {
-          trigger: 'axis',
+          trigger: "axis",
           axisPointer: {
-            type: 'hadow'
-          }
+            type: "hadow",
+          },
         },
         xAxis: {
-          type: 'category',
-          data: [
-            'BALI',
-            'DKI JAKARTA',
-            'JAWA BARAT'
-          ],
+          type: "category",
+          data: ["BALI", "DKI JAKARTA", "JAWA BARAT"],
           axisLabel: {
-            rotate: 45
-          }
+            rotate: 45,
+          },
         },
         yAxis: {
-          type: 'value',
-          name: 'Total Transaksi'
+          type: "value",
+          name: "Total Transaksi",
         },
         series: [
           {
-            type: 'bar',
+            type: "bar",
             data: [19623, 53182, 353623],
             barMaxWidth: 40,
             itemStyle: {
-              borderRadius: [4, 4, 0, 0]
-            }
-          }
-        ]
-      }
+              borderRadius: [4, 4, 0, 0],
+            },
+          },
+        ],
+      },
     ],
   },
   {
     init: (state, { payload }) => {
       state.system = payload;
-      state.history = [{
-        role: "system",
-        content: payload
-      }, 
-      // {
-      //   role: "user",
-      //   content: "Jika pertanyaan bersifat umum maka jawab saja dengan sewajarnya, apakah kamu faham ?"
-      // }, 
-      // {
-      //   role: "assistant",
-      //   content: "Ya saya faham, silahkan ajukan pertanyaan."
-      // },
-    ];
+      state.history = [
+        {
+          role: "system",
+          content: payload,
+        },
+        // {
+        //   role: "user",
+        //   content: "Jika pertanyaan bersifat umum maka jawab saja dengan sewajarnya, apakah kamu faham ?"
+        // },
+        // {
+        //   role: "assistant",
+        //   content: "Ya saya faham, silahkan ajukan pertanyaan."
+        // },
+      ];
     },
     setConfigChart: (state, { payload }) => ({
       ...state,
@@ -112,7 +108,7 @@ const useAdbrief = buildingStore(
         ...state.history,
         {
           role: "chart",
-          content: JSON.stringify(payload)
+          content: JSON.stringify(payload),
         },
       ],
     }),
@@ -127,10 +123,7 @@ const useAdbrief = buildingStore(
     }),
     addChat: (state, { payload }) => ({
       ...state,
-      history: [
-        ...state.history,
-        payload,
-      ],
+      history: [...state.history, payload],
     }),
     setWorking: (state, { payload }) => ({
       ...state,
@@ -149,18 +142,18 @@ const useAdbrief = buildingStore(
       system: payload,
     }),
   },
-  inits => {
+  (inits) => {
     console.log("run init");
     fetch("http://localhost/adbrief/Ai/prompt")
-      .then(v => v.text())
-      .then(v => {
+      .then((v) => v.text())
+      .then((v) => {
         inits(v);
       })
-      .catch(e => console.log(e));
+      .catch((e) => console.log(e));
   },
-  getState => ({
+  (getState) => ({
     getChat: () => getState().history,
-  })
+  }),
 );
 
 export default useAdbrief;

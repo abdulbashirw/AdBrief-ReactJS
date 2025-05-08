@@ -15,7 +15,9 @@ export function buildTreeInverted(data: any) {
   });
 
   const targetIds = new Set(data.edges.map((edge: any) => edge.target));
-  const rootNodes = data.nodes.filter((node: any) => !targetIds.has(node.id)).map((node: any) => nodesMap.get(node.id));
+  const rootNodes = data.nodes
+    .filter((node: any) => !targetIds.has(node.id))
+    .map((node: any) => nodesMap.get(node.id));
 
   return rootNodes;
 }

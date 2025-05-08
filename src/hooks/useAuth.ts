@@ -8,7 +8,7 @@ export function useAuth<T extends object>() {
     const token = localStorage.getItem("token");
     if (token) {
       setAuthenticated(true);
-      setUser(JSON.parse(localStorage.getItem("user") || '{}'));
+      setUser(JSON.parse(localStorage.getItem("user") || "{}"));
     }
   }, []);
 

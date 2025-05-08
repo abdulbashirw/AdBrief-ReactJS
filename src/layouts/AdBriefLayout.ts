@@ -1,24 +1,31 @@
-import { useSelector } from 'react-redux'
-import { RootState } from '../store'
-import { Column, Container, Expanded, Root, Rows, Widget } from '../System/Lib/Widgets'
-import SideBar from '../pages/tutorial/SideBar'
-import { Outlet } from 'react-router-dom'
-import SideBarChat from '../pages/tutorial/SideBarChat'
-import Header from '../pages/tutorial/Header'
+import {
+  Root,
+  Column,
+  Container,
+  Expanded,
+  Rows,
+  Widget,
+  Text,
+} from "../System/Lib/Widgets";
+import SideBar from "../pages/tutorial/SideBar";
+import { Outlet } from "react-router-dom";
+import Header from "../pages/tutorial/Header";
+import { useTheme } from "@/hooks/useTheme";
 //import Header from '../pages/tutorial/Header'
 
 export default function AdBriefLayout() {
-  const { colors } = useSelector((state: RootState) => state.theme)
+  const Theme = useTheme();
 
   return Root({
-    theme: colors,
+    theme: Theme.colors,
     child: Container({
-      color: 'theme.background',
+      color: Theme.colors.background,
       child: Rows({
         children: [
           Container({
             width: 250,
-            borderRight: '1px solid theme.border',
+            backgroundColor: Theme.theme === "dark" ? "#303030" : "#D3D3D3",
+            borderRight: "1px solid theme.border",
             child: SideBar(),
           }),
           Expanded({
@@ -27,26 +34,35 @@ export default function AdBriefLayout() {
               children: [
                 Container({
                   height: 50,
-                  color: 'theme.background',
-                  border: '1px solid theme.border',
+                  color: Theme.theme,
+                  border: "1px solid theme.border",
                   child: Header(),
                 }),
                 Expanded({
                   child: Rows({
                     children: [
                       Expanded({ child: Widget(Outlet) }),
-                      Container({
-                        width: 350,
-                        borderLeft: '1px solid theme.border',
-                        child: SideBarChat(),
-                      }),
+                      // Container({
+                      //   width: 350,
+                      //   borderLeft: '1px solid theme.border',
+                      //   child: SideBarChat(),
+                      // }),
                     ],
                   }),
                 }),
                 Container({
                   height: 35,
-                  color: 'theme.background',
-                  borderTop: '1px solid theme.border',
+                  color: Theme.theme,
+                  textAlign: "center",
+                  justifyContent: "center",
+                  //borderTop: '1px solid theme.border',
+                  child: Text(
+                    "AdBriefAI mungkin tidak selalu akurat. Pastikan untuk memeriksa informasi penting sebelum digunakan.",
+                    {
+                      size: 12,
+                      textAlign: "center",
+                    },
+                  ),
                 }),
               ],
             }),
@@ -54,5 +70,5 @@ export default function AdBriefLayout() {
         ],
       }),
     }),
-  }).builder()
+  }).builder();
 }

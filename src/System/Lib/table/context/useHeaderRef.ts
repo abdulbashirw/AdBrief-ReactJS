@@ -1,17 +1,18 @@
-import { createContext, useContext, useRef } from 'react'
-import { Widget } from '../../Widgets'
+import { createContext, useContext, useRef } from "react";
+import { Widget } from "../../Widgets";
 
-const HeaderRefContext = createContext<React.RefObject<HTMLDivElement | null> | null>(null)
+const HeaderRefContext =
+  createContext<React.RefObject<HTMLDivElement | null> | null>(null);
 export function HeaderRefProvider(props: any) {
-  const headerRef = useRef<HTMLDivElement>(null)
-  const children = props.children as any
+  const headerRef = useRef<HTMLDivElement>(null);
+  const children = props.children as any;
   return Widget(HeaderRefContext.Provider, {
     value: headerRef,
     children,
-  })
+  });
 }
 
 export function useHeaderRef() {
-  const context = useContext(HeaderRefContext)
-  return context
+  const context = useContext(HeaderRefContext);
+  return context;
 }

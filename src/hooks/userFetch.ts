@@ -9,7 +9,8 @@ export function useFetch(endpoint: string) {
   useEffect(() => {
     setLoading(true);
     const apiFetcher = new ApiFetcher("https://api.github.com");
-    apiFetcher.get(endpoint)
+    apiFetcher
+      .get(endpoint)
       .then((json) => setData(json))
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));

@@ -1,9 +1,18 @@
-import { DataWidget } from '../../../contexts/NodeWidgetType'
-import { Container, Rows, Space, Expanded, Column, Text, Center, Button } from '../../../System/Lib/Widgets'
+import { DataWidget } from "../../../contexts/NodeWidgetType";
+import {
+  Container,
+  Rows,
+  Space,
+  Expanded,
+  Column,
+  Text,
+  Center,
+  Button,
+} from "../../../System/Lib/Widgets";
 
 export function HeaderEditor(data: DataWidget, handleSave: Function) {
   return Container({
-    backgroundColor: 'theme.background',
+    backgroundColor: "theme.background",
     height: 70,
     child: Rows({
       children: [
@@ -14,15 +23,15 @@ export function HeaderEditor(data: DataWidget, handleSave: Function) {
             height: 50,
             margin: 15,
             background: `url(${data.image}) no-repeat center center`,
-            backgroundSize: 'cover',
+            backgroundSize: "cover",
           }),
         }),
         Space(10),
         Expanded({
           child: Column({
-            justifyContent: 'center',
+            justifyContent: "center",
             children: [
-              Text(data.label, { fontWeight: 'bold', fontSize: 20 }),
+              Text(data.label, { fontWeight: "bold", fontSize: 20 }),
               Text(data.description, { fontSize: 12 }),
             ],
           }),
@@ -31,9 +40,9 @@ export function HeaderEditor(data: DataWidget, handleSave: Function) {
           child: Center({
             child: Container({
               height: 35,
-              child: Button('Save Nodes', {
+              child: Button("Save Nodes", {
                 confirm: true,
-                icon: 'save',
+                icon: "save",
                 click: handleSave,
               }),
             }),
@@ -42,5 +51,5 @@ export function HeaderEditor(data: DataWidget, handleSave: Function) {
         Space(20),
       ],
     }),
-  })
+  });
 }

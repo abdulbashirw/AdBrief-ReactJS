@@ -3,7 +3,9 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 // example testing api with generate mutation
 export const api = createApi({
   reducerPath: "api",
-  baseQuery: fetchBaseQuery({ baseUrl: "https://jsonplaceholder.typicode.com/" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: "https://jsonplaceholder.typicode.com/",
+  }),
   tagTypes: ["Todos"],
   endpoints: (builder) => ({
     getTodos: builder.query<any, void>({
@@ -30,4 +32,9 @@ export const api = createApi({
   }),
 });
 
-export const { useGetTodosQuery, useGetTodoByIdQuery, useAddTodoMutation, useDeleteTodoMutation } = api;
+export const {
+  useGetTodosQuery,
+  useGetTodoByIdQuery,
+  useAddTodoMutation,
+  useDeleteTodoMutation,
+} = api;

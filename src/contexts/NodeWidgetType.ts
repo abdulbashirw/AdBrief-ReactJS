@@ -13,7 +13,7 @@ export enum NodeWidgetType {
   Notification,
   Firebase,
   Email,
-};
+}
 
 export interface DataWidget {
   id: number | string;
@@ -23,7 +23,7 @@ export interface DataWidget {
   description: string;
   option: any;
   editor?: any;
-};
+}
 
 export interface DataNode {
   id: string;
@@ -43,4 +43,4 @@ export interface DataNode {
   width: number;
   height: number;
   close?: Function;
-};
+}
