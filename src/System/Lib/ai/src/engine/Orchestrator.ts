@@ -1,6 +1,5 @@
 import AbstractAgent from '../agents/AbstractAgent'
 import DefaultAgent from '../agents/DefaultAgent'
-import { SystemPrompts } from '../config/config_agent'
 import Engine from './engine'
 
 export default class Orchestrator {
@@ -10,9 +9,17 @@ export default class Orchestrator {
   question: string = ''
   payor_code: string = ''
 
-  constructor(payor_code: string) {
+  // constructor(payor_code: string) {
+  constructor() {
     this.engine = new Engine()
-    this.engine.setSystemMessage(SystemPrompts.KNOWLEDGE.toString().replace(/\{payor_code\}/gi, payor_code))
+    // this.engine.setSystemMessage(SystemPrompts.KNOWLEDGE.toString().replace(/\{payor_code\}/g, payor_code))
+  }
+
+  addParameter(message: string, parameter: {[key: string]: any}) {
+    Object.keys(parameter).forEach(key => {
+      message = message.replaceAll(`{${key}}`, parameter[key]);
+    })
+    this.engine.setSystemMessage(message);
   }
 
   setData(data: any) {

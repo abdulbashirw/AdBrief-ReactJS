@@ -30,6 +30,7 @@ import RangkumanAgent from '../System/Lib/ai/src/agents/RangkumanAgent'
 import ChartAgent from '../System/Lib/ai/src/agents/ChartAgent'
 import ViewChat from './ViewChat'
 import { useTheme } from '@/hooks/useTheme'
+import { SystemPrompts } from '@/System/Lib/ai/src/config/config_agent'
 
 function scrollTop() {
   setTimeout(() => {
@@ -240,6 +241,11 @@ function process(store: any) {
   })
   scrollTop()
   const orchestrator = new Orchestrator()
+  orchestrator.addParameter(SystemPrompts.KNOWLEDGE_PAYOR, {
+    "payor_code": "payor_1",
+    "user_id": "Bambang",
+    "product_id": 40
+  });
   for (let i = 0; i < store.state.history.length; i++) {
     const chat = store.state.history[i]
     if (chat.role == 'chart') {

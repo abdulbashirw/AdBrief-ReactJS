@@ -311,7 +311,7 @@ function process(store: any) {
   })
   scrollTop()
 
-  const orchestrator = new Orchestrator(payor_code)
+  const orchestrator = new Orchestrator()
 
   for (let i = 0; i < store.state.history.length; i++) {
     const chat = store.state.history[i]
@@ -387,7 +387,7 @@ function processProps(store: any) {
     content: chat,
   })
   scrollTop()
-  const orchestrator = new Orchestrator(payor_code)
+  const orchestrator = new Orchestrator()
   for (let i = 0; i < store.state.history.length; i++) {
     const chat = store.state.history[i]
     if (chat.role == 'chart') {

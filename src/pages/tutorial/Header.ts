@@ -119,6 +119,7 @@ export default function Header() {
                       child: ListItemText({
                         width: 'auto',
                         child: Rows({
+                          center: true,
                           children: [
                             Column({
                               children: [
@@ -166,11 +167,15 @@ export default function Header() {
                       },
                       child: ListItemText({
                         child: Rows({
+                          center: true,
                           children: [
                             item.icon,
                             Space(10),
-                            Text(item.label),
+                            Expanded({
+                              child: Text(item.label)
+                            }),
                             item.iconAction ? SizedBox({ width: 30, child: item.iconAction }) : SizedBox({ width: 30 }),
+                            Space(10),
                           ],
                         }),
                       }),
