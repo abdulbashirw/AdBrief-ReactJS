@@ -1,15 +1,15 @@
-import NotFound from "../pages/NotFound";
-import EditorLayout from "../layouts/EditorLayout";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import MainLayout from "../layouts/MainLayout";
-import Sample from "../layouts/Sample";
-import Login from "../pages/Login";
-import AdBriefLayout from "@/layouts/AdBriefLayout";
-import ContentUserManagement from "@/pages/user-manegement/ContentUserManagement";
-import ContentDasboard from "@/pages/dashboard/ContentDashboard";
-import ContentDasboardChat from "@/pages/dashboard-chat/ContentDashboardChat";
-import ContentAdBrief from "@/pages/adBrief/ContentAdBrief";
-import ContentLangganan from "@/pages/adBrief/ContentLangganan";
+import NotFound from '../pages/NotFound'
+import EditorLayout from '../layouts/EditorLayout'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import MainLayout from '../layouts/MainLayout'
+import Sample from '../layouts/Sample'
+import Login from '../pages/Login'
+import AdBriefLayout from '@/layouts/AdBriefLayout'
+import ContentUserManagement from '@/pages/user-manegement/ContentUserManagement'
+import ContentDasboardChat from '@/pages/dashboard-chat/ContentDashboardChat'
+import ContentAdBrief from '@/pages/adBrief/ContentAdBrief'
+import ContentLangganan from '@/pages/adBrief/ContentLangganan'
+import ContentDasboard from '@/pages/dashboard/ContentDashboard'
 
 const AppRoutes = () => {
   return (
@@ -32,7 +32,7 @@ const AppRoutes = () => {
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
-  );
-};
+  )
+}
 
-export default AppRoutes;
+export default AppRoutes

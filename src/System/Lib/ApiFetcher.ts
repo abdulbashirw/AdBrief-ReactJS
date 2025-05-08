@@ -1,74 +1,66 @@
 export interface ApiResponse {
-  code: number;
-  success: boolean;
-  message: string;
-  data: any;
+  code: number
+  success: boolean
+  message: string
+  data: any
 }
 
-const defaultTimeout: number = 10000;
+const defaultTimeout: number = 10000
 
 export default class ApiFetcher {
-  private baseUrl: string;
-  private bearerToken?: string;
+  private baseUrl: string
+  private bearerToken?: string
 
   constructor(baseUrl: string, bearerToken?: string) {
-    this.baseUrl = baseUrl;
-    this.bearerToken = bearerToken;
+    this.baseUrl = baseUrl
+    this.bearerToken = bearerToken
   }
 
   private checkInternetConnection(): boolean {
     if (!navigator.onLine) {
-      console.error(
-        "Tidak ada koneksi internet. Pastikan perangkat Anda terhubung.",
-      );
-      return false;
+      console.error('Tidak ada koneksi internet. Pastikan perangkat Anda terhubung.')
+      return false
     }
-    return true;
+    return true
   }
 
   private handleResponseStatus(status: number): string {
     const statusMessages: Record<number, string> = {
-      200: "Permintaan berhasil! (200)",
-      201: "Data berhasil dibuat! (201)",
-      400: "Permintaan tidak valid! (400)",
-      401: "Anda tidak diotorisasi! (401)",
-      403: "Akses dilarang! (403)",
-      404: "Sumber daya tidak ditemukan! (404)",
-      500: "Terjadi kesalahan pada server! (500)",
-      503: "Server tidak tersedia! (503)",
-    };
-    return statusMessages[status] || `Kode respons tidak dikenal: ${status}`;
+      200: 'Permintaan berhasil! (200)',
+      201: 'Data berhasil dibuat! (201)',
+      400: 'Permintaan tidak valid! (400)',
+      401: 'Anda tidak diotorisasi! (401)',
+      403: 'Akses dilarang! (403)',
+      404: 'Sumber daya tidak ditemukan! (404)',
+      500: 'Terjadi kesalahan pada server! (500)',
+      503: 'Server tidak tersedia! (503)',
+    }
+    return statusMessages[status] || `Kode respons tidak dikenal: ${status}`
   }
 
   private async parseJsonSafely(response: Response): Promise<any> {
     try {
-      return await response.json();
+      return await response.json()
     } catch {
-      console.error(
-        "Gagal parsing JSON. Format data dari server mungkin bermasalah.",
-      );
-      throw new Error("Format JSON tidak valid.");
+      console.error('Gagal parsing JSON. Format data dari server mungkin bermasalah.')
+      throw new Error('Format JSON tidak valid.')
     }
   }
 
-  private async fetchWithTimeout(
-    url: string,
-    options: RequestInit,
-    timeout = defaultTimeout,
-  ): Promise<Response> {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), timeout);
+  private async fetchWithTimeout(url: string, options: RequestInit, timeout = defaultTimeout): Promise<Response> {
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), timeout)
     const response = await fetch(url, {
       ...options,
       signal: controller.signal,
-    });
-    clearTimeout(timeoutId);
-    return response;
+    })
+    clearTimeout(timeoutId)
+    return response
   }
 
   private async request(
     endpoint: string,
-    method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
+    method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE',
     body?: any,
     headers: Record<string, string> = {},
     timeout = defaultTimeout,
@@ -77,9 +69,9 @@ export default class ApiFetcher {
       return {
         code: 0,
         success: false,
-        message: "Tidak ada koneksi internet.",
+        message: 'Tidak ada koneksi internet.',
         data: null,
-      };
+      }
     }
 
     try {
@@ -89,73 +81,48 @@ export default class ApiFetcher {
           method,
           headers: {
             Authorization: `Bearer ${this.bearerToken}`,
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             ...headers,
           },
           body: body ? JSON.stringify(body) : undefined,
         },
         timeout,
-      );
+      )
 
-      const message = this.handleResponseStatus(response.status);
+      const message = this.handleResponseStatus(response.status)
 
       if (!response.ok) {
-        return { code: response.status, success: false, message, data: null };
+        return { code: response.status, success: false, message, data: null }
       }
 
-      const data = await this.parseJsonSafely(response);
-      return { code: response.status, success: true, message, data };
+      const data = await this.parseJsonSafely(response)
+      return { code: response.status, success: true, message, data }
     } catch (error: any) {
       const errorMessage =
-        error.name === "AbortError"
-          ? "Permintaan timeout. Silakan coba lagi."
-          : "Terjadi kesalahan internal.";
+        error.name === 'AbortError' ? 'Permintaan timeout. Silakan coba lagi.' : 'Terjadi kesalahan internal.'
 
-      console.error("Terjadi kesalahan:", error);
-      return { code: 500, success: false, message: errorMessage, data: null };
+      console.error('Terjadi kesalahan:', error)
+      return { code: 500, success: false, message: errorMessage, data: null }
     }
   }
 
-  public async get(
-    endpoint: string,
-    headers: Record<string, string> = {},
-    timeout = defaultTimeout,
-  ) {
-    return this.request(endpoint, "GET", undefined, headers, timeout);
+  public async get(endpoint: string, headers: Record<string, string> = {}, timeout = defaultTimeout) {
+    return this.request(endpoint, 'GET', undefined, headers, timeout)
   }
 
-  public async post(
-    endpoint: string,
-    body: any,
-    headers: Record<string, string> = {},
-    timeout = defaultTimeout,
-  ) {
-    return this.request(endpoint, "POST", body, headers, timeout);
+  public async post(endpoint: string, body: any, headers: Record<string, string> = {}, timeout = defaultTimeout) {
+    return this.request(endpoint, 'POST', body, headers, timeout)
   }
 
-  public async put(
-    endpoint: string,
-    body: any,
-    headers: Record<string, string> = {},
-    timeout = defaultTimeout,
-  ) {
-    return this.request(endpoint, "PUT", body, headers, timeout);
+  public async put(endpoint: string, body: any, headers: Record<string, string> = {}, timeout = defaultTimeout) {
+    return this.request(endpoint, 'PUT', body, headers, timeout)
   }
 
-  public async patch(
-    endpoint: string,
-    body: any,
-    headers: Record<string, string> = {},
-    timeout = defaultTimeout,
-  ) {
-    return this.request(endpoint, "PATCH", body, headers, timeout);
+  public async patch(endpoint: string, body: any, headers: Record<string, string> = {}, timeout = defaultTimeout) {
+    return this.request(endpoint, 'PATCH', body, headers, timeout)
   }
 
-  public async delete(
-    endpoint: string,
-    headers: Record<string, string> = {},
-    timeout = defaultTimeout,
-  ) {
-    return this.request(endpoint, "DELETE", undefined, headers, timeout);
+  public async delete(endpoint: string, headers: Record<string, string> = {}, timeout = defaultTimeout) {
+    return this.request(endpoint, 'DELETE', undefined, headers, timeout)
   }
 }

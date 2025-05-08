@@ -1,119 +1,119 @@
 export interface MenuTutorProps {
-  name: string;
-  path: string;
+  name: string
+  path: string
 }
 
 export const all: MenuTutorProps[] = [
   {
-    name: "Home",
-    path: "/",
+    name: 'Home',
+    path: '/',
   },
   {
-    name: "Autocomplete",
-    path: "autocomplete",
+    name: 'Autocomplete',
+    path: 'autocomplete',
   },
   {
-    name: "Button",
-    path: "button",
+    name: 'Button',
+    path: 'button',
   },
   {
-    name: "ButtonGroup",
-    path: "buttongroup",
+    name: 'ButtonGroup',
+    path: 'buttongroup',
   },
   {
-    name: "Checkbox",
-    path: "checkbox",
+    name: 'Checkbox',
+    path: 'checkbox',
   },
   {
-    name: "Floating Action Button",
-    path: "fab",
+    name: 'Floating Action Button',
+    path: 'fab',
   },
   {
-    name: "RadioGroup",
-    path: "radiogroup",
+    name: 'RadioGroup',
+    path: 'radiogroup',
   },
   {
-    name: "Select",
-    path: "select",
+    name: 'Select',
+    path: 'select',
   },
   {
-    name: "Slider",
-    path: "slider",
+    name: 'Slider',
+    path: 'slider',
   },
   {
-    name: "Switch",
-    path: "switch",
+    name: 'Switch',
+    path: 'switch',
   },
   {
-    name: "TextField",
-    path: "textfield",
+    name: 'TextField',
+    path: 'textfield',
   },
   {
-    name: "Avatar",
-    path: "avatar",
+    name: 'Avatar',
+    path: 'avatar',
   },
   {
-    name: "Badge",
-    path: "badge",
+    name: 'Badge',
+    path: 'badge',
   },
   {
-    name: "Chip",
-    path: "chip",
+    name: 'Chip',
+    path: 'chip',
   },
   {
-    name: "Divider",
-    path: "divider",
+    name: 'Divider',
+    path: 'divider',
   },
   {
-    name: "Icons",
-    path: "icon",
+    name: 'Icons',
+    path: 'icon',
   },
   {
-    name: "List",
-    path: "list",
+    name: 'List',
+    path: 'list',
   },
   {
-    name: "Menu",
-    path: "menu",
+    name: 'Menu',
+    path: 'menu',
   },
   {
-    name: "Tooltip",
-    path: "tooltip",
+    name: 'Tooltip',
+    path: 'tooltip',
   },
   {
-    name: "Modal",
-    path: "modal",
+    name: 'Modal',
+    path: 'modal',
   },
   {
-    name: "Snackbar",
-    path: "snackbar",
+    name: 'Snackbar',
+    path: 'snackbar',
   },
   {
-    name: "Confirm",
-    path: "confirm",
+    name: 'Confirm',
+    path: 'confirm',
   },
   {
-    name: "Tabs",
-    path: "tabs",
+    name: 'Tabs',
+    path: 'tabs',
   },
   {
-    name: "Prompt",
-    path: "prompt",
+    name: 'Prompt',
+    path: 'prompt',
   },
   {
-    name: "Progress",
-    path: "progress",
+    name: 'Progress',
+    path: 'progress',
   },
   {
-    name: "Skeleton",
-    path: "skeleton",
+    name: 'Skeleton',
+    path: 'skeleton',
   },
   {
-    name: "Paper",
-    path: "paper",
+    name: 'Paper',
+    path: 'paper',
   },
   {
-    name: "Tabs",
-    path: "tabs",
+    name: 'Tabs',
+    path: 'tabs',
   },
-];
+]

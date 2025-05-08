@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useSelector } from 'react-redux'
 import {
   Button,
   Center,
@@ -12,16 +12,16 @@ import {
   SizedBox,
   Space,
   Text,
-} from "@/System/Lib/Widgets.ts";
-import { RootState } from "@/store";
-import AddRoundedIcon from "@mui/icons-material/AddRounded";
-import FullscreenRoundedIcon from "@mui/icons-material/FullscreenRounded";
-import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
-import { useTheme } from "@/hooks/useTheme";
+} from '@/System/Lib/Widgets.ts'
+import { RootState } from '@/store'
+import AddRoundedIcon from '@mui/icons-material/AddRounded'
+import FullscreenRoundedIcon from '@mui/icons-material/FullscreenRounded'
+import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded'
+import { useTheme } from '@/hooks/useTheme'
 
 export default function TambahContentDasboard({ setTambahDashboard }) {
-  const Theme = useTheme();
-  const { colors } = useSelector((state: RootState) => state.theme);
+  const Theme = useTheme()
+  const { colors } = useSelector((state: RootState) => state.theme)
 
   return Column({
     padding: 20,
@@ -33,52 +33,45 @@ export default function TambahContentDasboard({ setTambahDashboard }) {
             padding: 5,
             borderRadius: 10,
             width: 100,
-            border: "1px solid theme.border",
+            border: '1px solid theme.border',
             child: Rows({
               center: true,
-              children: [
-                IconMui(FullscreenRoundedIcon),
-                Space(5),
-                Text("Fullscreen", { size: 14, weight: "bold" }),
-              ],
+              children: [IconMui(FullscreenRoundedIcon), Space(5), Text('Fullscreen', { size: 14, weight: 'bold' })],
             }),
           }),
+          Space(10),
           Space(10),
           SizedBox({
             padding: 5,
             borderRadius: 10,
             width: 100,
-            border: "1px solid theme.border",
+            border: '1px solid theme.border',
             child: Rows({
               center: true,
-              children: [
-                IconMui(LogoutRoundedIcon),
-                Space(5),
-                Text("Import", { size: 14, weight: "bold" }),
-              ],
+              children: [IconMui(LogoutRoundedIcon), Space(5), Text('Import', { size: 14, weight: 'bold' })],
             }),
           }),
           Expanded({
             child: Center({
-              child: Text("Judul Dashboard"),
+              child: Text('Judul Dashboard'),
             }),
           }),
-          Text("Judul"),
+          Text('Judul'),
         ],
       }),
       Space(20),
       Container({
         child: SingleChildScrollView({
           child: Expanded({
-            backgroundColor: Theme.theme === "dark" ? "#303030" : "#D3D3D3",
+            backgroundColor: Theme.theme === 'dark' ? '#303030' : '#D3D3D3',
             padding: 25,
             borderRadius: 10,
-            border: "1px solid theme.border",
+            border: '1px solid theme.border',
             child: Column({
               children: [
                 // menu ? Text(menu.title, { size: 30 }) : null,
                 // Space(50),
-                Text("Buat Dashboard Baru", { size: 20, fontWeight: "bold" }),
+                Text('Buat Dashboard Baru', { size: 20, fontWeight: 'bold' }),
                 Space(20),
                 Row({
                   children: [
@@ -91,22 +84,22 @@ export default function TambahContentDasboard({ setTambahDashboard }) {
                           Expanded({
                             child: SizedBox({
                               padding: 5,
-                              backgroundColor: "theme.background",
+                              backgroundColor: 'theme.background',
                               borderRadius: 10,
-                              border: "1px solid theme.border",
+                              border: '1px solid theme.border',
                               center: true,
                               child: IconMui(AddRoundedIcon, { size: 50 }),
                             }),
                           }),
                           Container({
-                            width: "100%",
+                            width: '100%',
                             height: 25,
                             padding: 10,
                             child: Column({
                               children: [
-                                Text("Halaman Baru", {
+                                Text('Halaman Baru', {
                                   size: 14,
-                                  weight: "bold",
+                                  weight: 'bold',
                                 }),
                               ],
                             }),
@@ -118,7 +111,7 @@ export default function TambahContentDasboard({ setTambahDashboard }) {
                   ],
                 }),
                 Space(50),
-                Button("Kembali", {
+                Button('Kembali', {
                   padding: 10,
                   width: 100,
                   onClick: () => setTambahDashboard(false),
@@ -131,5 +124,5 @@ export default function TambahContentDasboard({ setTambahDashboard }) {
         }),
       }),
     ],
-  }).builder();
+  }).builder()
 }

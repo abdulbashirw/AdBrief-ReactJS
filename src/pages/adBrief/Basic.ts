@@ -9,65 +9,61 @@ import {
   SizedBox,
   Space,
   Text,
-} from "../../System/Lib/Widgets";
-import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
-import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
+} from '../../System/Lib/Widgets'
+import CheckRoundedIcon from '@mui/icons-material/CheckRounded'
+import Brightness1RoundedIcon from '@mui/icons-material/Brightness1Rounded'
 
 const descItems = [
   {
-    content: "Descriptive Summary",
+    content: 'Descriptive Summary',
   },
   {
-    content: "Maks 2 User",
+    content: 'Maks 2 User',
   },
   {
-    content: "3 Topik :",
+    content: '3 Topik :',
   },
-];
+]
 const descSubItems = [
   {
-    contentSub: "General Overview",
+    contentSub: 'General Overview',
   },
   {
-    contentSub: "Transaction Overview",
+    contentSub: 'Transaction Overview',
   },
   {
-    contentSub: "Diseases Overview",
+    contentSub: 'Diseases Overview',
   },
-];
+]
 
 export default function ContentBasic() {
   return Column({
     children: [
       SizedBox({
         padding: 12,
-        child: Text("Basic", { size: 20, weight: "bold" }),
+        child: Text('Basic', { size: 20, weight: 'bold' }),
       }),
       SizedBox({
         paddingTop: 5,
         paddingLeft: 12,
-        child: Text("Ideal untuk usaha dan instansi berskala kecil", {
+        child: Text('Ideal untuk usaha dan instansi berskala kecil', {
           size: 14,
         }),
       }),
       Space(20),
-      SizedBox({ width: "100%", border: "1px solid theme.border" }),
+      SizedBox({ width: '100%', border: '1px solid theme.border' }),
       SizedBox({
-        justifyContent: "center",
+        justifyContent: 'center',
         padding: 12,
         child: Rows({
-          children: [
-            Text("Rp.8000.000", { size: 20, weight: "bold" }),
-            Space(10),
-            Text("/bulan", { size: 16 }),
-          ],
+          children: [Text('Rp.8000.000', { size: 20, weight: 'bold' }), Space(10), Text('/bulan', { size: 16 })],
         }),
       }),
       Expanded({
         child: SingleChildScrollView({
           child: Column({
             children: [
-              ...descItems.map((item) =>
+              ...descItems.map(item =>
                 SizedBox({
                   paddingLeft: 12,
                   child: Rows({
@@ -75,13 +71,13 @@ export default function ContentBasic() {
                       IconMui(CheckRoundedIcon, { width: 20 }),
                       Space(10),
                       Text(item.content, {
-                        alignContent: "center",
+                        alignContent: 'center',
                       }),
                     ],
                   }),
                 }),
               ),
-              ...descSubItems.map((item) =>
+              ...descSubItems.map(item =>
                 SizedBox({
                   paddingLeft: 40,
                   child: Rows({
@@ -89,7 +85,7 @@ export default function ContentBasic() {
                       IconMui(Brightness1RoundedIcon, { width: 10 }),
                       Space(10),
                       Text(item.contentSub, {
-                        alignContent: "center",
+                        alignContent: 'center',
                       }),
                     ],
                   }),
@@ -102,12 +98,12 @@ export default function ContentBasic() {
       SizedBox({
         paddingTop: 25,
         child: Center({
-          child: Button("Mulai Berlangganan", {
+          child: Button('Mulai Berlangganan', {
             height: 35,
           }),
         }),
       }),
       Space(20),
     ],
-  });
+  })
 }

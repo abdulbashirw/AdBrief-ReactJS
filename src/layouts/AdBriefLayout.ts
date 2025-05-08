@@ -1,20 +1,12 @@
-import {
-  Root,
-  Column,
-  Container,
-  Expanded,
-  Rows,
-  Widget,
-  Text,
-} from "../System/Lib/Widgets";
-import SideBar from "../pages/tutorial/SideBar";
-import { Outlet } from "react-router-dom";
-import Header from "../pages/tutorial/Header";
-import { useTheme } from "@/hooks/useTheme";
+import { Root, Column, Container, Expanded, Rows, Widget, Text } from '../System/Lib/Widgets'
+import SideBar from '../pages/tutorial/SideBar'
+import { Outlet } from 'react-router-dom'
+import Header from '../pages/tutorial/Header'
+import { useTheme } from '@/hooks/useTheme'
 //import Header from '../pages/tutorial/Header'
 
 export default function AdBriefLayout() {
-  const Theme = useTheme();
+  const Theme = useTheme()
 
   return Root({
     theme: Theme.colors,
@@ -24,8 +16,8 @@ export default function AdBriefLayout() {
         children: [
           Container({
             width: 250,
-            backgroundColor: Theme.theme === "dark" ? "#303030" : "#D3D3D3",
-            borderRight: "1px solid theme.border",
+            backgroundColor: Theme.theme === 'dark' ? '#303030' : '#D3D3D3',
+            borderRight: '1px solid theme.border',
             child: SideBar(),
           }),
           Expanded({
@@ -35,7 +27,7 @@ export default function AdBriefLayout() {
                 Container({
                   height: 50,
                   color: Theme.theme,
-                  border: "1px solid theme.border",
+                  border: '1px solid theme.border',
                   child: Header(),
                 }),
                 Expanded({
@@ -53,14 +45,14 @@ export default function AdBriefLayout() {
                 Container({
                   height: 35,
                   color: Theme.theme,
-                  textAlign: "center",
-                  justifyContent: "center",
+                  textAlign: 'center',
+                  justifyContent: 'center',
                   //borderTop: '1px solid theme.border',
                   child: Text(
-                    "AdBriefAI mungkin tidak selalu akurat. Pastikan untuk memeriksa informasi penting sebelum digunakan.",
+                    'AdBriefAI mungkin tidak selalu akurat. Pastikan untuk memeriksa informasi penting sebelum digunakan.',
                     {
                       size: 12,
-                      textAlign: "center",
+                      textAlign: 'center',
                     },
                   ),
                 }),
@@ -70,5 +62,5 @@ export default function AdBriefLayout() {
         ],
       }),
     }),
-  }).builder();
+  }).builder()
 }

@@ -14,21 +14,21 @@ import {
   Switch,
   Text,
   TextField,
-} from "../../../System/Lib/Widgets";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../store";
-import { setNodesFromState } from "../../../store/editor/flowSlice";
-import { DataNode, DataWidget } from "../../../contexts/NodeWidgetType";
-import { HeaderEditor } from "./HeaderEditor";
-import { useMemo, useState } from "react";
-import PushPinIcon from "@mui/icons-material/PushPin";
+} from '../../../System/Lib/Widgets'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '../../../store'
+import { setNodesFromState } from '../../../store/editor/flowSlice'
+import { DataNode, DataWidget } from '../../../contexts/NodeWidgetType'
+import { HeaderEditor } from './HeaderEditor'
+import { useMemo, useState } from 'react'
+import PushPinIcon from '@mui/icons-material/PushPin'
 
 export default function EditorCoreUrl(dataNode: DataNode) {
   return Container({
     child: Stack({
       children: [
         Container({
-          color: "#000000bf",
+          color: '#000000bf',
           child: Rows({
             children: [
               Expanded({
@@ -43,7 +43,7 @@ export default function EditorCoreUrl(dataNode: DataNode) {
               Expanded({
                 width: 500,
                 shadow: true,
-                display: "flex",
+                display: 'flex',
                 marginTop: 20,
                 marginBottom: 20,
                 radius: 10,
@@ -54,32 +54,32 @@ export default function EditorCoreUrl(dataNode: DataNode) {
         }),
       ],
     }),
-  });
+  })
 }
 
 function testEll() {
   return Container({
     height: 50,
     marginBottom: 5,
-    color: "green",
-  });
+    color: 'green',
+  })
 }
 
 function SideRight() {
   return Container({
-    color: "white",
-    overflow: "hidden",
+    color: 'white',
+    overflow: 'hidden',
     child: Column({
       children: [
         Container({
           height: 60,
-          borderBottom: "1px solid black",
-          color: "#ccc",
+          borderBottom: '1px solid black',
+          color: '#ccc',
           child: Rows({
             center: true,
             children: [
               Space(20),
-              Text("Input", { fontWeight: "bold", fontSize: 20 }),
+              Text('Input', { fontWeight: 'bold', fontSize: 20 }),
               Expanded(),
               Click({
                 click: () => {},
@@ -115,36 +115,29 @@ function SideRight() {
         }),
       ],
     }),
-  });
+  })
 }
 
 function Editor(dataNode: DataNode) {
-  const dispatch = useDispatch();
-  const nodes = useSelector((state: RootState) => state.flow.nodes);
-  const data: DataWidget = nodes.filter((x: any) => x.id == dataNode.id)[0]
-    .data as DataWidget;
-  const option = data.option || {};
+  const dispatch = useDispatch()
+  const nodes = useSelector((state: RootState) => state.flow.nodes)
+  const data: DataWidget = nodes.filter((x: any) => x.id == dataNode.id)[0].data as DataWidget
+  const option = data.option || {}
 
-  const [requiredToken, setRequiredToken] = useState<boolean>(
-    option.requiredToken || false,
-  );
-  const [tokenCore, setTokenCore] = useState<string>(option.tokenCore || "");
-  const [urlCore, setUrlCore] = useState<string>(option.urlCore || "");
-  const [customHeader, setCustomHeader] = useState<boolean>(
-    option.customHeader || false,
-  );
-  const [dataHeader, setDataHeader] = useState<{ [key: string]: any }[]>(
-    option.dataHeader || [],
-  );
+  const [requiredToken, setRequiredToken] = useState<boolean>(option.requiredToken || false)
+  const [tokenCore, setTokenCore] = useState<string>(option.tokenCore || '')
+  const [urlCore, setUrlCore] = useState<string>(option.urlCore || '')
+  const [customHeader, setCustomHeader] = useState<boolean>(option.customHeader || false)
+  const [dataHeader, setDataHeader] = useState<{ [key: string]: any }[]>(option.dataHeader || [])
 
   const handleHeaderChange = (index: number, field: string, value: string) => {
-    const updatedHeaders = [...dataHeader];
+    const updatedHeaders = [...dataHeader]
     updatedHeaders[index] = {
       ...updatedHeaders[index],
       [field]: value,
-    };
-    setDataHeader(updatedHeaders);
-  };
+    }
+    setDataHeader(updatedHeaders)
+  }
 
   const renderedHeaders = useMemo(() => {
     return dataHeader.map((item, index) =>
@@ -152,50 +145,44 @@ function Editor(dataNode: DataNode) {
         ? null
         : Rows({
             borderSize: 1,
-            borderColor: "theme.border",
+            borderColor: 'theme.border',
             children: [
               Container({
                 width: 150,
                 padding: 5,
                 borderSize: 1,
-                borderRightColor: "theme.border",
+                borderRightColor: 'theme.border',
                 child: TextField({
                   value: item.name,
-                  onChange: (e: any) =>
-                    handleHeaderChange(index, "name", e.target.value),
+                  onChange: (e: any) => handleHeaderChange(index, 'name', e.target.value),
                 }),
               }),
               Expanded({
                 padding: 5,
                 borderSize: 1,
-                borderRightColor: "theme.border",
+                borderRightColor: 'theme.border',
                 child: TextField({
                   value: item.value,
                   fullWidth: true,
-                  onChange: (e: any) =>
-                    handleHeaderChange(index, "value", e.target.value),
+                  onChange: (e: any) => handleHeaderChange(index, 'value', e.target.value),
                 }),
               }),
               Container({
                 width: 100,
-                height: "inherit",
+                height: 'inherit',
                 padding: 5,
                 child: Rows({
                   center: true,
-                  height: "100%",
+                  height: '100%',
                   children: [
                     Container({
                       height: 35,
-                      child: Button("", {
-                        icon: "delete",
-                        backgroundColor: "red",
-                        fontColor: "white",
+                      child: Button('', {
+                        icon: 'delete',
+                        backgroundColor: 'red',
+                        fontColor: 'white',
                         onClick: () => {
-                          setDataHeader(
-                            dataHeader.filter(
-                              (x: any, i: number) => i != index,
-                            ),
-                          );
+                          setDataHeader(dataHeader.filter((x: any, i: number) => i != index))
                         },
                       }),
                     }),
@@ -204,8 +191,8 @@ function Editor(dataNode: DataNode) {
               }),
             ],
           }),
-    );
-  }, [dataHeader, customHeader]);
+    )
+  }, [dataHeader, customHeader])
 
   const handleSave = () => {
     const newNode = nodes.map((node: any) => {
@@ -223,22 +210,22 @@ function Editor(dataNode: DataNode) {
               dataHeader,
             },
           },
-        };
+        }
       }
-      return node;
-    });
-    dispatch(setNodesFromState(newNode));
+      return node
+    })
+    dispatch(setNodesFromState(newNode))
     if (dataNode.close) {
-      dataNode.close();
+      dataNode.close()
     }
-  };
+  }
 
   return Container({
     marginRight: 50,
     child: Paper({
       elevation: 10,
-      overflow: "hidden",
-      height: "100%",
+      overflow: 'hidden',
+      height: '100%',
       child: Column({
         children: [
           HeaderEditor(data, handleSave),
@@ -248,15 +235,15 @@ function Editor(dataNode: DataNode) {
                 padding: 20,
                 children: [
                   Rows({
-                    alignItems: "center",
+                    alignItems: 'center',
                     children: [
                       Expanded({
-                        child: Text("Required Token", { fontWeight: "bold" }),
+                        child: Text('Required Token', { fontWeight: 'bold' }),
                       }),
                       Switch({
                         checked: requiredToken,
                         onChange: (e: any) => {
-                          setRequiredToken(e.target.checked);
+                          setRequiredToken(e.target.checked)
                         },
                       }),
                     ],
@@ -266,39 +253,39 @@ function Editor(dataNode: DataNode) {
                     ? null
                     : TextField({
                         value: tokenCore,
-                        label: "Input Token",
+                        label: 'Input Token',
                         onChange: (e: any) => {
-                          setTokenCore(e.target.value);
+                          setTokenCore(e.target.value)
                         },
                       }),
                   Space(20),
                   Rows({
-                    alignItems: "center",
+                    alignItems: 'center',
                     children: [
                       Expanded({
-                        child: Text("Url", { fontWeight: "bold" }),
+                        child: Text('Url', { fontWeight: 'bold' }),
                       }),
                     ],
                   }),
                   Space(10),
                   TextField({
                     value: urlCore,
-                    label: "Input Url",
+                    label: 'Input Url',
                     onChange: (e: any) => {
-                      setUrlCore(e.target.value);
+                      setUrlCore(e.target.value)
                     },
                   }),
                   Space(20),
                   Rows({
-                    alignItems: "center",
+                    alignItems: 'center',
                     children: [
                       Expanded({
-                        child: Text("Custom Header", { fontWeight: "bold" }),
+                        child: Text('Custom Header', { fontWeight: 'bold' }),
                       }),
                       Switch({
                         checked: customHeader,
                         onChange: (e: any) => {
-                          setCustomHeader(e.target.checked);
+                          setCustomHeader(e.target.checked)
                         },
                       }),
                     ],
@@ -307,31 +294,31 @@ function Editor(dataNode: DataNode) {
                   !customHeader
                     ? null
                     : Container({
-                        backgroundColor: "theme.background",
+                        backgroundColor: 'theme.background',
                         child: Column({
                           children: [
                             Rows({
                               borderSize: 1,
-                              borderColor: "theme.border",
+                              borderColor: 'theme.border',
                               children: [
                                 Container({
                                   width: 150,
                                   borderSize: 1,
-                                  borderRightColor: "theme.border",
+                                  borderRightColor: 'theme.border',
                                   padding: 5,
                                   child: Center({
-                                    child: Text("Field", {
-                                      fontWeight: "bold",
+                                    child: Text('Field', {
+                                      fontWeight: 'bold',
                                     }),
                                   }),
                                 }),
                                 Expanded({
                                   padding: 5,
                                   borderSize: 1,
-                                  borderRightColor: "theme.border",
+                                  borderRightColor: 'theme.border',
                                   child: Center({
-                                    child: Text("Value", {
-                                      fontWeight: "bold",
+                                    child: Text('Value', {
+                                      fontWeight: 'bold',
                                     }),
                                   }),
                                 }),
@@ -339,8 +326,8 @@ function Editor(dataNode: DataNode) {
                                   width: 100,
                                   padding: 5,
                                   child: Center({
-                                    child: Text("Action", {
-                                      fontWeight: "bold",
+                                    child: Text('Action', {
+                                      fontWeight: 'bold',
                                     }),
                                   }),
                                 }),
@@ -356,16 +343,16 @@ function Editor(dataNode: DataNode) {
                         width: 150,
                         height: 35,
                         marginTop: 10,
-                        child: Button("Add Header", {
-                          icon: "add",
+                        child: Button('Add Header', {
+                          icon: 'add',
                           onClick: () => {
                             setDataHeader([
                               ...dataHeader,
                               {
-                                name: "",
-                                value: "",
+                                name: '',
+                                value: '',
                               },
-                            ]);
+                            ])
                           },
                         }),
                       }),
@@ -376,5 +363,5 @@ function Editor(dataNode: DataNode) {
         ],
       }),
     }),
-  });
+  })
 }

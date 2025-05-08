@@ -1,4 +1,4 @@
-import useLocalState from "../../contexts/useLocalState";
+import useLocalState from '../../contexts/useLocalState'
 import {
   Center,
   Checkbox,
@@ -14,57 +14,57 @@ import {
   SingleChildScrollView,
   Space,
   Text,
-} from "../../System/Lib/Widgets";
-import { useBodyRef } from "../../context/useBodyRef";
-import { useHeaderRef } from "../../context/useHeaderRef";
-import { useEffect, useState } from "react";
-import { useSplitRef } from "../../context/useSplitRef";
+} from '../../System/Lib/Widgets'
+import { useBodyRef } from '../../context/useBodyRef'
+import { useHeaderRef } from '../../context/useHeaderRef'
+import { useEffect, useState } from 'react'
+import { useSplitRef } from '../../context/useSplitRef'
 
 export default function BodyTable() {
-  const splitRef = useSplitRef();
-  const bodyRef = useBodyRef();
-  const headerRef = useHeaderRef();
-  const store = useLocalState();
-  const [hoverIndex, setHoverIndex] = useState(-1);
-  const { datastore, fields, scrollMode, checkIndex } = store.state;
+  const splitRef = useSplitRef()
+  const bodyRef = useBodyRef()
+  const headerRef = useHeaderRef()
+  const store = useLocalState()
+  const [hoverIndex, setHoverIndex] = useState(-1)
+  const { datastore, fields, scrollMode, checkIndex } = store.state
 
-  const [modeShift, setModeShift] = useState<boolean>(false);
-  const [startNumber, setStartNumber] = useState<number>(-1);
+  const [modeShift, setModeShift] = useState<boolean>(false)
+  const [startNumber, setStartNumber] = useState<number>(-1)
 
   useEffect(() => {
     const handleMouseDown = (e: any) => {
       if (e.shiftKey) {
-        console.log("Activate");
-        setModeShift(true);
+        console.log('Activate')
+        setModeShift(true)
       }
-      if (e.key == "Escape") {
-        console.log("Clean All");
-        setModeShift(false);
-        setStartNumber(-1);
-        store.setCheckIndex();
+      if (e.key == 'Escape') {
+        console.log('Clean All')
+        setModeShift(false)
+        setStartNumber(-1)
+        store.setCheckIndex()
       }
-    };
+    }
 
-    window.addEventListener("keydown", handleMouseDown);
+    window.addEventListener('keydown', handleMouseDown)
     return () => {
-      window.removeEventListener("keydown", handleMouseDown);
-    };
-  }, [modeShift]);
+      window.removeEventListener('keydown', handleMouseDown)
+    }
+  }, [modeShift])
 
   return Expanded({
     child: Rows({
       children: [
         Container({
           width: 122,
-          color: "theme.backgroundPaper",
+          color: 'theme.backgroundPaper',
           child: SingleChildScrollView({
             ref: splitRef,
             onMouseEnter: (e: any) => {
-              store.setScrollMode("split");
+              store.setScrollMode('split')
             },
             onScroll: (e: any) => {
-              if (scrollMode === "split") {
-                bodyRef!.current!.scrollTop = e.target.scrollTop;
+              if (scrollMode === 'split') {
+                bodyRef!.current!.scrollTop = e.target.scrollTop
               }
             },
             child: Column({
@@ -72,10 +72,10 @@ export default function BodyTable() {
                 return Rows({
                   onMouseMove: (e: any) => {
                     if (modeShift) {
-                      console.log("setup....");
-                      store.setCheckIndex();
+                      console.log('setup....')
+                      store.setCheckIndex()
                       for (let i = startNumber; i < x; i++) {
-                        store.setCheckByIndex({ index: i, value: true });
+                        store.setCheckByIndex({ index: i, value: true })
                       }
                     }
                   },
@@ -83,16 +83,16 @@ export default function BodyTable() {
                     Container({
                       width: 60,
                       height: 50,
-                      borderRight: "1px solid theme.border",
-                      borderBottom: "1px solid theme.border",
+                      borderRight: '1px solid theme.border',
+                      borderBottom: '1px solid theme.border',
                       child: Center({
                         child: Checkbox({
                           checked: checkIndex[x],
                           onClick: (e: any) => {
-                            const checked = e.target.checked;
-                            store.setCheckByIndex({ index: x, value: checked });
-                            setModeShift(false);
-                            setStartNumber(x);
+                            const checked = e.target.checked
+                            store.setCheckByIndex({ index: x, value: checked })
+                            setModeShift(false)
+                            setStartNumber(x)
                           },
                         }),
                       }),
@@ -100,14 +100,14 @@ export default function BodyTable() {
                     Container({
                       width: 60,
                       height: 50,
-                      borderRight: "1px solid theme.border",
-                      borderBottom: "1px solid theme.border",
+                      borderRight: '1px solid theme.border',
+                      borderBottom: '1px solid theme.border',
                       child: Center({
                         child: Text(`${x + 1}`, { size: 14 }),
                       }),
                     }),
                   ],
-                });
+                })
               }),
             }),
           }),
@@ -116,64 +116,60 @@ export default function BodyTable() {
           child: SingleChildScrollView({
             ref: bodyRef,
             onMouseEnter: () => {
-              store.setScrollMode("body");
+              store.setScrollMode('body')
             },
             onScroll: (e: any) => {
-              if (scrollMode === "body") {
+              if (scrollMode === 'body') {
                 if (splitRef && splitRef) {
-                  splitRef!.current!.scrollTop = e.target.scrollTop;
-                  headerRef!.current!.scrollLeft = e.target.scrollLeft;
+                  splitRef!.current!.scrollTop = e.target.scrollTop
+                  headerRef!.current!.scrollLeft = e.target.scrollLeft
                 }
               }
             },
             child: Container({
               width: fields.reduce((acc, field) => acc + field.width, 0),
               height: 51 * (store.getData().length + 0),
-              borderBottom: "0px",
+              borderBottom: '0px',
               child: Column({
                 children: store.getData().map((data: any, x: number) => {
                   return Rows({
-                    color: checkIndex[x]
-                      ? "theme.active"
-                      : hoverIndex == x
-                        ? "theme.hover"
-                        : "theme.background",
+                    color: checkIndex[x] ? 'theme.active' : hoverIndex == x ? 'theme.hover' : 'theme.background',
                     width: fields.reduce((acc, field) => acc + field.width, 0),
                     height: 50,
-                    borderBottom: "1px solid theme.border",
+                    borderBottom: '1px solid theme.border',
                     onMouseEnter: () => setHoverIndex(x),
                     onMouseLeave: () => setHoverIndex(-1),
                     onClick: () => {
                       store.setCheckByIndex({
                         index: x,
                         value: !checkIndex[x],
-                      });
+                      })
                     },
                     attr: {
-                      "data-row-index": x.toString(),
+                      'data-row-index': x.toString(),
                     },
-                    children: fields.map((field) => {
+                    children: fields.map(field => {
                       return Container({
                         width: field.width,
-                        borderRight: "1px solid theme.border",
+                        borderRight: '1px solid theme.border',
                         onContextMenu: (e: any) => {
                           const menu = Menu(e, {
                             children: [
-                              { label: "Edit", icon: "edit" },
-                              { label: "Copy", icon: "copy" },
-                              { label: "Cut", icon: "cut" },
-                              { label: "Paste", icon: "paste" },
-                              { label: "Duplicate", icon: "duplicate" },
-                              { label: "Move", icon: "play" },
-                              "Divider",
-                              { label: "Delete", icon: "delete" },
+                              { label: 'Edit', icon: 'edit' },
+                              { label: 'Copy', icon: 'copy' },
+                              { label: 'Cut', icon: 'cut' },
+                              { label: 'Paste', icon: 'paste' },
+                              { label: 'Duplicate', icon: 'duplicate' },
+                              { label: 'Move', icon: 'play' },
+                              'Divider',
+                              { label: 'Delete', icon: 'delete' },
                             ].map((item: any) => {
-                              if (item === "divider") {
-                                return Divider({ width: 300 });
+                              if (item === 'divider') {
+                                return Divider({ width: 300 })
                               }
                               return MenuItem({
                                 onClick: () => {
-                                  menu.unMounting();
+                                  menu.unMounting()
                                 },
                                 child: ListItemText({
                                   child: Rows({
@@ -189,28 +185,27 @@ export default function BodyTable() {
                                     ],
                                   }),
                                 }),
-                              });
+                              })
                             }),
-                          });
+                          })
                         },
                         child: Center({
-                          boxSizing: "border-box",
-                          justifyContent:
-                            field.title == "No" ? "center" : "start",
+                          boxSizing: 'border-box',
+                          justifyContent: field.title == 'No' ? 'center' : 'start',
                           child: Container({
                             child: Text(data[field.title], {
                               paddingLeft: 10,
-                              whiteSpace: "nowrap",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                              display: "inline-block",
+                              whiteSpace: 'nowrap',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              display: 'inline-block',
                               width: field.width - 20,
                             }),
                           }),
                         }),
-                      });
+                      })
                     }),
-                  });
+                  })
                 }),
               }),
             }),
@@ -218,5 +213,5 @@ export default function BodyTable() {
         }),
       ],
     }),
-  });
+  })
 }

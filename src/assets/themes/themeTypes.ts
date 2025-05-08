@@ -2,125 +2,125 @@
  * Interface yang mendefinisikan tipe tema dengan berbagai warna dan elemen desain.
  */
 export interface ThemeType {
-  button: string;
+  button: string
 
   /**
    * Warna utama yang digunakan untuk elemen-elemen kunci dalam desain.
    */
-  primary: string;
+  primary: string
 
   /**
    * Warna sekunder yang digunakan untuk elemen-elemen pendukung atau alternatif dari warna utama.
    */
-  secondary: string;
+  secondary: string
 
   /**
    * Warna teritiary (opsional) yang digunakan untuk elemen-elemen tambahan atau variasi dari warna utama dan sekunder.
    */
-  tertiary?: string;
+  tertiary?: string
 
   /**
    * Warna yang menunjukkan status sukses, misalnya pada notifikasi atau indikator berhasil.
    */
-  success: string;
+  success: string
 
   /**
    * Warna yang menunjukkan status peringatan, misalnya pada notifikasi atau indikator peringatan.
    */
-  warning: string;
+  warning: string
 
   /**
    * Warna yang menunjukkan status kesalahan, misalnya pada notifikasi atau indikator kesalahan.
    */
-  error: string;
+  error: string
 
   /**
    * Warna yang menunjukkan status informasi, misalnya pada notifikasi atau indikator informasi.
    */
-  info: string;
+  info: string
 
   /**
    * Warna teks utama yang digunakan untuk teks konten dasar.
    */
-  textPrimary: string;
+  textPrimary: string
 
   /**
    * Warna teks sekunder yang digunakan untuk teks konten pendukung atau informasional.
    */
-  textSecondary: string;
+  textSecondary: string
 
   /**
    * Warna teks yang digunakan untuk teks yang dinonaktifkan atau tidak dapat diinteraksi.
    */
-  textDisabled: string;
+  textDisabled: string
 
   /**
    * Warna teks yang digunakan untuk teks yang berada di latar belakang berwarna gelap atau warna yang kontras tinggi.
    */
-  textInverse: string;
+  textInverse: string
 
   /**
    * Warna latar belakang utama untuk halaman atau kontainer utama.
    */
-  background: string;
+  background: string
 
   /**
    * Warna latar belakang untuk elemen-elemen kertas atau komponen yang membutuhkan latar belakang yang lebih ringan.
    */
-  backgroundPaper: string;
+  backgroundPaper: string
 
   /**
    * Warna border untuk elemen-elemen yang membutuhkan garis tepi.
    */
-  border: string;
+  border: string
 
   /**
    * Warna pembagi antara elemen-elemen untuk memisahkan visualisasi.
    */
-  divider: string;
+  divider: string
 
   /**
    * Bayangan atau efek shadow yang digunakan untuk memberikan tampilan 3D atau mendalam pada elemen-elemen.
    */
-  shadow: string;
+  shadow: string
 
   /**
    * Warna yang digunakan saat elemen-elemen dihover oleh user.
    */
-  hover: string;
+  hover: string
 
   /**
    * Warna yang digunakan saat elemen-elemen aktif atau sedang dipilih/ditekan oleh user.
    */
-  active: string;
+  active: string
 
   /**
    * Warna latar belakang untuk input/form.
    */
-  inputBackground: string;
+  inputBackground: string
 
   /**
    * Warna border untuk input/form.
    */
-  inputBorder: string;
+  inputBorder: string
 
   /**
    * Warna teks untuk input/form.
    */
-  inputText: string;
+  inputText: string
 
   /**
    * Warna untuk tautan (link) atau elemen yang diklik untuk navigasi.
    */
-  link: string;
+  link: string
 
   /**
    * Warna untuk elemen-elemen yang dinonaktifkan atau tidak dapat diinteraksi.
    */
-  disabled: string;
+  disabled: string
 
   /**
    * Mode tema yang menentukan apakah tema adalah 'light' atau 'dark'.
    */
-  mode: "light" | "dark";
+  mode: 'light' | 'dark'
 }

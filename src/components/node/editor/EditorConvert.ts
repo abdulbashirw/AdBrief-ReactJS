@@ -9,20 +9,20 @@ import {
   Stack,
   Text,
   TextField,
-} from "../../../System/Lib/Widgets";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../store";
-import { setNodesFromState } from "../../../store/editor/flowSlice";
-import { DataNode, DataWidget } from "../../../contexts/NodeWidgetType";
-import { HeaderEditor } from "./HeaderEditor";
-import { useMemo, useState } from "react";
+} from '../../../System/Lib/Widgets'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '../../../store'
+import { setNodesFromState } from '../../../store/editor/flowSlice'
+import { DataNode, DataWidget } from '../../../contexts/NodeWidgetType'
+import { HeaderEditor } from './HeaderEditor'
+import { useMemo, useState } from 'react'
 
 export default function EditorConvert(dataNode: DataNode) {
   return Container({
     child: Stack({
       children: [
         Container({
-          color: "#000000bf",
+          color: '#000000bf',
           child: Rows({
             children: [
               Expanded({
@@ -33,14 +33,14 @@ export default function EditorConvert(dataNode: DataNode) {
                 borderTopLeftRadius: 20,
                 borderBottomLeftRadius: 20,
                 child: Container({
-                  color: "white",
+                  color: 'white',
                 }),
               }),
               Expanded({
                 width: 500,
-                color: "white",
+                color: 'white',
                 shadow: true,
-                display: "flex",
+                display: 'flex',
                 marginTop: 20,
                 marginBottom: 20,
                 radius: 10,
@@ -51,31 +51,30 @@ export default function EditorConvert(dataNode: DataNode) {
         }),
       ],
     }),
-  });
+  })
 }
 
 function Editor(dataNode: DataNode) {
-  const dispatch = useDispatch();
-  const nodes = useSelector((state: RootState) => state.flow.nodes);
-  const data: DataWidget = nodes.filter((x: any) => x.id == dataNode.id)[0]
-    .data as DataWidget;
-  const option = data.option || {};
+  const dispatch = useDispatch()
+  const nodes = useSelector((state: RootState) => state.flow.nodes)
+  const data: DataWidget = nodes.filter((x: any) => x.id == dataNode.id)[0].data as DataWidget
+  const option = data.option || {}
 
-  const [dataFields, setDataFields] = useState(option.dataFields || []);
+  const [dataFields, setDataFields] = useState(option.dataFields || [])
 
   const handleFieldChange = (index: number, field: string, value: string) => {
-    const updatedFields = [...dataFields];
+    const updatedFields = [...dataFields]
     updatedFields[index] = {
       ...updatedFields[index],
       [field]: value,
-    };
-    setDataFields(updatedFields);
-  };
+    }
+    setDataFields(updatedFields)
+  }
 
   const renderedFields = useMemo(() => {
     return dataFields.map((item: any, index: number) =>
       Rows({
-        border: "1px solid black",
+        border: '1px solid black',
         children: [
           Container({
             width: 150,
@@ -83,8 +82,7 @@ function Editor(dataNode: DataNode) {
             child: TextField({
               value: item.fieldTarget,
               fullWidth: true,
-              onChange: (e: any) =>
-                handleFieldChange(index, "fieldTarget", e.target.value),
+              onChange: (e: any) => handleFieldChange(index, 'fieldTarget', e.target.value),
             }),
           }),
           Expanded({
@@ -92,8 +90,7 @@ function Editor(dataNode: DataNode) {
             child: TextField({
               value: item.fieldUse || item.fieldTarget,
               fullWidth: true,
-              onChange: (e: any) =>
-                handleFieldChange(index, "fieldUse", e.target.value),
+              onChange: (e: any) => handleFieldChange(index, 'fieldUse', e.target.value),
             }),
           }),
           Expanded({
@@ -101,27 +98,24 @@ function Editor(dataNode: DataNode) {
             child: TextField({
               value: item.defaultValue,
               fullWidth: true,
-              onChange: (e: any) =>
-                handleFieldChange(index, "defaultValue", e.target.value),
+              onChange: (e: any) => handleFieldChange(index, 'defaultValue', e.target.value),
             }),
           }),
           Container({
             width: 70,
-            height: "inherit",
+            height: 'inherit',
             padding: 5,
             child: Rows({
               center: true,
-              height: "100%",
+              height: '100%',
               children: [
                 Container({
                   height: 35,
-                  child: Button("", {
-                    icon: "delete",
-                    backgroundColor: "red",
+                  child: Button('', {
+                    icon: 'delete',
+                    backgroundColor: 'red',
                     onClick: () => {
-                      setDataFields(
-                        dataFields.filter((_: any, i: number) => i != index),
-                      );
+                      setDataFields(dataFields.filter((_: any, i: number) => i != index))
                     },
                   }),
                 }),
@@ -130,8 +124,8 @@ function Editor(dataNode: DataNode) {
           }),
         ],
       }),
-    );
-  }, [dataFields]);
+    )
+  }, [dataFields])
 
   const handleSave = () => {
     const newNode = nodes.map((node: any) => {
@@ -145,13 +139,13 @@ function Editor(dataNode: DataNode) {
               dataFields,
             },
           },
-        };
+        }
       }
-      return node;
-    });
-    dispatch(setNodesFromState(newNode));
-    if (dataNode.close) dataNode.close();
-  };
+      return node
+    })
+    dispatch(setNodesFromState(newNode))
+    if (dataNode.close) dataNode.close()
+  }
 
   return Container({
     child: Column({
@@ -166,29 +160,29 @@ function Editor(dataNode: DataNode) {
                   child: Column({
                     children: [
                       Rows({
-                        border: "1px solid black",
-                        color: "#ccc",
+                        border: '1px solid black',
+                        color: '#ccc',
                         children: [
                           Container({
                             width: 150,
                             padding: 5,
                             child: Center({
-                              child: Text("FieldTarget", {
-                                fontWeight: "bold",
+                              child: Text('FieldTarget', {
+                                fontWeight: 'bold',
                               }),
                             }),
                           }),
                           Expanded({
                             padding: 5,
                             child: Center({
-                              child: Text("FieldUse", { fontWeight: "bold" }),
+                              child: Text('FieldUse', { fontWeight: 'bold' }),
                             }),
                           }),
                           Expanded({
                             padding: 5,
                             child: Center({
-                              child: Text("DefaultValue", {
-                                fontWeight: "bold",
+                              child: Text('DefaultValue', {
+                                fontWeight: 'bold',
                               }),
                             }),
                           }),
@@ -196,7 +190,7 @@ function Editor(dataNode: DataNode) {
                             width: 70,
                             padding: 5,
                             child: Center({
-                              child: Text("Action", { fontWeight: "bold" }),
+                              child: Text('Action', { fontWeight: 'bold' }),
                             }),
                           }),
                         ],
@@ -209,13 +203,9 @@ function Editor(dataNode: DataNode) {
                   width: 150,
                   height: 35,
                   marginTop: 10,
-                  child: Button("Add Field", {
-                    icon: "add",
-                    onClick: () =>
-                      setDataFields([
-                        ...dataFields,
-                        { fieldTarget: "", fieldUse: "", defaultValue: "" },
-                      ]),
+                  child: Button('Add Field', {
+                    icon: 'add',
+                    onClick: () => setDataFields([...dataFields, { fieldTarget: '', fieldUse: '', defaultValue: '' }]),
                   }),
                 }),
               ],
@@ -224,5 +214,5 @@ function Editor(dataNode: DataNode) {
         }),
       ],
     }),
-  });
+  })
 }

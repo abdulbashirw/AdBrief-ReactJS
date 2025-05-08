@@ -9,20 +9,20 @@ import {
   Stack,
   Text,
   TextField,
-} from "../../../System/Lib/Widgets";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../store";
-import { setNodesFromState } from "../../../store/editor/flowSlice";
-import { DataNode, DataWidget } from "../../../contexts/NodeWidgetType";
-import { HeaderEditor } from "./HeaderEditor";
-import { useMemo, useState } from "react";
+} from '../../../System/Lib/Widgets'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '../../../store'
+import { setNodesFromState } from '../../../store/editor/flowSlice'
+import { DataNode, DataWidget } from '../../../contexts/NodeWidgetType'
+import { HeaderEditor } from './HeaderEditor'
+import { useMemo, useState } from 'react'
 
 export default function EditorError(dataNode: DataNode) {
   return Container({
     child: Stack({
       children: [
         Container({
-          color: "#000000bf",
+          color: '#000000bf',
           child: Rows({
             children: [
               Expanded({
@@ -33,14 +33,14 @@ export default function EditorError(dataNode: DataNode) {
                 borderTopLeftRadius: 20,
                 borderBottomLeftRadius: 20,
                 child: Container({
-                  color: "white",
+                  color: 'white',
                 }),
               }),
               Expanded({
                 width: 500,
-                color: "white",
+                color: 'white',
                 shadow: true,
-                display: "flex",
+                display: 'flex',
                 marginTop: 20,
                 marginBottom: 20,
                 radius: 10,
@@ -51,31 +51,30 @@ export default function EditorError(dataNode: DataNode) {
         }),
       ],
     }),
-  });
+  })
 }
 
 function Editor(dataNode: DataNode) {
-  const dispatch = useDispatch();
-  const nodes = useSelector((state: RootState) => state.flow.nodes);
-  const data: DataWidget = nodes.filter((x: any) => x.id == dataNode.id)[0]
-    .data as DataWidget;
-  const option = data.option || {};
+  const dispatch = useDispatch()
+  const nodes = useSelector((state: RootState) => state.flow.nodes)
+  const data: DataWidget = nodes.filter((x: any) => x.id == dataNode.id)[0].data as DataWidget
+  const option = data.option || {}
 
-  const [errorList, setErrorList] = useState(option.errorList || []);
+  const [errorList, setErrorList] = useState(option.errorList || [])
 
   const handleErrorChange = (index: number, field: string, value: string) => {
-    const updatedErrors = [...errorList];
+    const updatedErrors = [...errorList]
     updatedErrors[index] = {
       ...updatedErrors[index],
       [field]: value,
-    };
-    setErrorList(updatedErrors);
-  };
+    }
+    setErrorList(updatedErrors)
+  }
 
   const renderedErrors = useMemo(() => {
     return errorList.map((item: any, index: number) =>
       Rows({
-        border: "1px solid black",
+        border: '1px solid black',
         children: [
           Container({
             width: 150,
@@ -83,8 +82,7 @@ function Editor(dataNode: DataNode) {
             child: TextField({
               value: item.code,
               fullWidth: true,
-              onChange: (e: any) =>
-                handleErrorChange(index, "code", e.target.value),
+              onChange: (e: any) => handleErrorChange(index, 'code', e.target.value),
             }),
           }),
           Expanded({
@@ -92,27 +90,24 @@ function Editor(dataNode: DataNode) {
             child: TextField({
               value: item.message,
               fullWidth: true,
-              onChange: (e: any) =>
-                handleErrorChange(index, "message", e.target.value),
+              onChange: (e: any) => handleErrorChange(index, 'message', e.target.value),
             }),
           }),
           Container({
             width: 70,
-            height: "inherit",
+            height: 'inherit',
             padding: 5,
             child: Rows({
               center: true,
-              height: "100%",
+              height: '100%',
               children: [
                 Container({
                   height: 35,
-                  child: Button("", {
-                    icon: "delete",
-                    backgroundColor: "red",
+                  child: Button('', {
+                    icon: 'delete',
+                    backgroundColor: 'red',
                     onClick: () => {
-                      setErrorList(
-                        errorList.filter((_: any, i: number) => i != index),
-                      );
+                      setErrorList(errorList.filter((_: any, i: number) => i != index))
                     },
                   }),
                 }),
@@ -121,8 +116,8 @@ function Editor(dataNode: DataNode) {
           }),
         ],
       }),
-    );
-  }, [errorList]);
+    )
+  }, [errorList])
 
   const handleSave = () => {
     const newNode = nodes.map((node: any) => {
@@ -136,13 +131,13 @@ function Editor(dataNode: DataNode) {
               errorList,
             },
           },
-        };
+        }
       }
-      return node;
-    });
-    dispatch(setNodesFromState(newNode));
-    if (dataNode.close) dataNode.close();
-  };
+      return node
+    })
+    dispatch(setNodesFromState(newNode))
+    if (dataNode.close) dataNode.close()
+  }
 
   return Container({
     child: Column({
@@ -157,27 +152,27 @@ function Editor(dataNode: DataNode) {
                   child: Column({
                     children: [
                       Rows({
-                        border: "1px solid black",
-                        color: "#ccc",
+                        border: '1px solid black',
+                        color: '#ccc',
                         children: [
                           Container({
                             width: 150,
                             padding: 5,
                             child: Center({
-                              child: Text("Code", { fontWeight: "bold" }),
+                              child: Text('Code', { fontWeight: 'bold' }),
                             }),
                           }),
                           Expanded({
                             padding: 5,
                             child: Center({
-                              child: Text("Message", { fontWeight: "bold" }),
+                              child: Text('Message', { fontWeight: 'bold' }),
                             }),
                           }),
                           Container({
                             width: 70,
                             padding: 5,
                             child: Center({
-                              child: Text("Action", { fontWeight: "bold" }),
+                              child: Text('Action', { fontWeight: 'bold' }),
                             }),
                           }),
                         ],
@@ -190,10 +185,9 @@ function Editor(dataNode: DataNode) {
                   width: 150,
                   height: 35,
                   marginTop: 10,
-                  child: Button("Add Error", {
-                    icon: "add",
-                    onClick: () =>
-                      setErrorList([...errorList, { code: "", message: "" }]),
+                  child: Button('Add Error', {
+                    icon: 'add',
+                    onClick: () => setErrorList([...errorList, { code: '', message: '' }]),
                   }),
                 }),
               ],
@@ -202,5 +196,5 @@ function Editor(dataNode: DataNode) {
         }),
       ],
     }),
-  });
+  })
 }

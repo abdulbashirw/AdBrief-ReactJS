@@ -1,22 +1,22 @@
-import Engine from "../engine/engine";
-import Orchestrator from "../engine/Orchestrator";
-import AbstractAgent from "./AbstractAgent";
-import AgentProps from "./AgentProps";
+import Engine from '../engine/engine'
+import Orchestrator from '../engine/Orchestrator'
+import AbstractAgent from './AbstractAgent'
+import AgentProps from './AgentProps'
 
 export default class ChartAgent extends AbstractAgent {
-  name: string = "agent_chart";
+  name: string = 'agent_chart'
 
   addData(data: AgentProps) {
-    this.data = data;
+    this.data = data
   }
 
   addCore(core: Orchestrator): AbstractAgent {
-    this.core = core;
-    return this;
+    this.core = core
+    return this
   }
 
   async run() {
-    const engine = new Engine();
+    const engine = new Engine()
     engine.setSystemMessage(
       [
         `
@@ -74,23 +74,18 @@ Jawaban:
     }
   ]
 }`,
-        "\`\`\`",
-        "",
-        "Note:",
-        "- Gunakan title pendek saja paling panjang 3 kata.",
-        "",
-        "chart_instruction:",
+        '```',
+        '',
+        'Note:',
+        '- Gunakan title pendek saja paling panjang 3 kata.',
+        '',
+        'chart_instruction:',
         JSON.stringify(this.data!.chart_instruction),
-      ].join("\n"),
-    );
+      ].join('\n'),
+    )
 
-    const result = await engine.prompt(
-      "Create config options for echarts from data.",
-    );
-    console.log(
-      "result.parseTextOutputToJson()",
-      result.parseTextOutputToJson(),
-    );
-    return result.parseTextOutputToJson();
+    const result = await engine.prompt('Create config options for echarts from data.')
+    console.log('result.parseTextOutputToJson()', result.parseTextOutputToJson())
+    return result.parseTextOutputToJson()
   }
 }

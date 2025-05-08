@@ -16,88 +16,85 @@ import {
   Confirm,
   IconMui,
   Tooltip,
-} from "../../System/Lib/Widgets";
-import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
-import {
-  buildTreeInverted,
-  convertTreeToReactFlow,
-} from "../../utils/buildTreeInverted";
-import { RootState } from "../../store";
-import { useSelector } from "react-redux";
-import RotateLeftIcon from "@mui/icons-material/RotateLeft";
-import SyncProblemIcon from "@mui/icons-material/SyncProblem";
-import LockOpenIcon from "@mui/icons-material/LockOpen";
-import DataSaverOnIcon from "@mui/icons-material/DataSaverOn";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import Check from "@mui/icons-material/Check";
+} from '../../System/Lib/Widgets'
+import ExitToAppIcon from '@mui/icons-material/ExitToApp'
+import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline'
+import { buildTreeInverted, convertTreeToReactFlow } from '../../utils/buildTreeInverted'
+import { RootState } from '../../store'
+import { useSelector } from 'react-redux'
+import RotateLeftIcon from '@mui/icons-material/RotateLeft'
+import SyncProblemIcon from '@mui/icons-material/SyncProblem'
+import LockOpenIcon from '@mui/icons-material/LockOpen'
+import DataSaverOnIcon from '@mui/icons-material/DataSaverOn'
+import MoreVertIcon from '@mui/icons-material/MoreVert'
+import Check from '@mui/icons-material/Check'
 
 interface ButtonConfig {
-  label: string;
-  icon: any;
-  backgroundColor: string;
-  click: Function;
+  label: string
+  icon: any
+  backgroundColor: string
+  click: Function
 }
 
 const buttons: ButtonConfig[] = [
   {
-    label: "Run Flow",
+    label: 'Run Flow',
     icon: IconMui(PlayCircleOutlineIcon),
-    backgroundColor: "green",
+    backgroundColor: 'green',
     click: () => {},
   },
   {
-    label: "Reset Flow",
+    label: 'Reset Flow',
     icon: IconMui(RotateLeftIcon),
-    backgroundColor: "red",
+    backgroundColor: 'red',
     click: () => {},
   },
   {
-    label: "Import Flow",
+    label: 'Import Flow',
     icon: IconMui(SyncProblemIcon),
-    backgroundColor: "orange",
+    backgroundColor: 'orange',
     click: () => {},
   },
   {
-    label: "Lock Flow",
+    label: 'Lock Flow',
     icon: IconMui(LockOpenIcon),
-    backgroundColor: "purple",
+    backgroundColor: 'purple',
     click: () => {},
   },
   {
-    label: "Export Flow",
+    label: 'Export Flow',
     icon: IconMui(ExitToAppIcon),
-    backgroundColor: "blue",
+    backgroundColor: 'blue',
     click: ({ nodes, edges }: any) => {
-      console.log({ nodes, edges });
-      const result = buildTreeInverted({ nodes, edges });
-      console.log(result);
-      console.log(convertTreeToReactFlow(result));
+      console.log({ nodes, edges })
+      const result = buildTreeInverted({ nodes, edges })
+      console.log(result)
+      console.log(convertTreeToReactFlow(result))
     },
   },
-];
+]
 
 const menuItems = [
-  { label: "Single" },
-  { label: "1.15", icon: IconMui(Check) },
-  { label: "Double" },
-  { label: "Custom: 1.2" },
-  "divider",
-  { label: "Add space before paragraph" },
-  { label: "Add space after paragraph" },
-  "divider",
-  { label: "Custom spacing..." },
-];
+  { label: 'Single' },
+  { label: '1.15', icon: IconMui(Check) },
+  { label: 'Double' },
+  { label: 'Custom: 1.2' },
+  'divider',
+  { label: 'Add space before paragraph' },
+  { label: 'Add space after paragraph' },
+  'divider',
+  { label: 'Custom spacing...' },
+]
 
 export default function HeaderTop() {
-  const nodes = useSelector((state: RootState) => state.flow.nodes);
-  const edges = useSelector((state: RootState) => state.flow.edges);
+  const nodes = useSelector((state: RootState) => state.flow.nodes)
+  const edges = useSelector((state: RootState) => state.flow.edges)
 
   return Container({
     height: 35,
-    color: "#ccc",
+    color: '#ccc',
     padding: 5,
-    borderBottom: "1px solid #555",
+    borderBottom: '1px solid #555',
     child: Rows({
       children: [
         Space(5),
@@ -107,24 +104,22 @@ export default function HeaderTop() {
             click: (e: any) => {
               const menu = Menu(e, {
                 children: menuItems.map((item: any) => {
-                  if (item === "divider") {
-                    return Divider({ width: 300 });
+                  if (item === 'divider') {
+                    return Divider({ width: 300 })
                   }
                   return MenuItem({
                     onClick: () => menu.unMounting(),
                     child: ListItemText({
                       child: Rows({
                         children: [
-                          item.icon
-                            ? Container({ width: 30, childReact: item.icon })
-                            : SizedBox({ width: 30 }),
+                          item.icon ? Container({ width: 30, childReact: item.icon }) : SizedBox({ width: 30 }),
                           Text(item.label),
                         ],
                       }),
                     }),
-                  });
+                  })
                 }),
-              });
+              })
             },
             child: Center({ child: IconMui(MoreVertIcon) }),
           }),
@@ -134,21 +129,21 @@ export default function HeaderTop() {
           width: 300,
           child: Input({
             radius: 5,
-            placeholder: "Enter Path...",
+            placeholder: 'Enter Path...',
           }),
         }),
-        ...buttons.map((button) => {
+        ...buttons.map(button => {
           return Container({
             child: Tooltip({
               title: button.label,
-              child: Button("", {
+              child: Button('', {
                 icon: button.icon,
                 backgroundColor: button.backgroundColor,
-                fontColor: "white",
+                fontColor: 'white',
                 click: () => button.click({ nodes, edges }),
               }),
             }),
-          });
+          })
         }),
         Space(5),
         // Select({
@@ -199,17 +194,17 @@ export default function HeaderTop() {
         // }),
         Expanded(),
         Container({
-          child: Button("Save Data", {
+          child: Button('Save Data', {
             icon: IconMui(DataSaverOnIcon),
-            backgroundColor: "green",
-            fontColor: "white",
+            backgroundColor: 'green',
+            fontColor: 'white',
             click: () => {
               // Snackbar();
               Confirm({
                 onAccept: () => {
-                  console.log("OKE");
+                  console.log('OKE')
                 },
-              });
+              })
               // Prompt({
               //   ask: "Masukan Nama",
               //   value: "ukung",
@@ -222,5 +217,5 @@ export default function HeaderTop() {
         }),
       ],
     }),
-  });
+  })
 }

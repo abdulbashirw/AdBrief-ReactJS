@@ -1,2 +1,2 @@
-import { createContext } from "react";
-export const AdminMode = createContext("admin");
+import { createContext } from 'react'
+export const AdminMode = createContext('admin')

@@ -1,4 +1,4 @@
-import { toggleTheme } from "../../store/slices/theme.slice";
+import { toggleTheme } from '../../store/slices/theme.slice'
 import {
   Button,
   Center,
@@ -11,30 +11,30 @@ import {
   Space,
   Switch,
   Text,
-} from "../../System/Lib/Widgets";
-import logo from "../../assets/images/adbrief.png";
-import logo1 from "../../assets/images/adbrief1.png";
-import { useLocation, useNavigate } from "react-router-dom";
-import Menu from "./Menu";
-import { useEffect } from "react";
-import { setActiveMenu } from "@/store/slices/menu.slice";
-import { useAppDispatch, useAppSelector } from "@/store";
-import { useTheme } from "@/hooks/useTheme";
+} from '../../System/Lib/Widgets'
+import logo from '../../assets/images/adbrief.png'
+import logo1 from '../../assets/images/adbrief1.png'
+import { useLocation, useNavigate } from 'react-router-dom'
+import Menu from './Menu'
+import { useEffect } from 'react'
+import { setActiveMenu } from '@/store/slices/menu.slice'
+import { useAppDispatch, useAppSelector } from '@/store'
+import { useTheme } from '@/hooks/useTheme'
 
 export default function SideBar() {
-  const nav = useNavigate();
-  const location = useLocation();
-  const Theme = useTheme();
-  const dispatch = useAppDispatch();
-  const menuItems = useAppSelector((state) => state.menu.items);
+  const nav = useNavigate()
+  const location = useLocation()
+  const Theme = useTheme()
+  const dispatch = useAppDispatch()
+  const menuItems = useAppSelector(state => state.menu.items)
 
-  const activeMenu = menuItems.find((item) => item.route === location.pathname);
+  const activeMenu = menuItems.find(item => item.route === location.pathname)
 
   useEffect(() => {
     if (activeMenu) {
-      dispatch(setActiveMenu(activeMenu));
+      dispatch(setActiveMenu(activeMenu))
     }
-  }, [location.pathname]);
+  }, [location.pathname])
 
   return Column({
     children: [
@@ -42,15 +42,15 @@ export default function SideBar() {
         padding: 12,
         child: Center({
           child: Image({
-            src: Theme.theme === "dark" ? logo1 : logo,
+            src: Theme.theme === 'dark' ? logo1 : logo,
             width: 200,
-            height: "auto",
+            height: 'auto',
           }),
         }),
       }),
       SizedBox({
         padding: 12,
-        child: Text("APP", { size: 14, weight: "bold" }),
+        child: Text('APP', { size: 14, weight: 'bold' }),
       }),
       SizedBox({
         child: Column({
@@ -60,12 +60,12 @@ export default function SideBar() {
       SizedBox({
         paddingTop: 25,
         child: Center({
-          child: Button("Back in Chat", {
-            icon: "undo",
+          child: Button('Back in Chat', {
+            icon: 'undo',
             height: 35,
             onClick: () => {
-              dispatch(setActiveMenu());
-              nav("/");
+              dispatch(setActiveMenu())
+              nav('/')
             },
           }),
         }),
@@ -73,7 +73,7 @@ export default function SideBar() {
       SizedBox({
         paddingTop: 25,
         paddingLeft: 12,
-        child: Text("Riwayat Chat", { size: 14, weight: "bold" }),
+        child: Text('Riwayat Chat', { size: 14, weight: 'bold' }),
       }),
       Expanded({
         child: SingleChildScrollView({
@@ -93,29 +93,29 @@ export default function SideBar() {
         padding: 10,
         child: Column({
           children: [
-            Text("Bantuan", {
-              icon: "plus",
+            Text('Bantuan', {
+              icon: 'plus',
               size: 10,
-              textAlign: "center",
-              weight: "bold",
+              textAlign: 'center',
+              weight: 'bold',
             }),
             Space(25),
-            Text("Copyright © AdBrief AI by PT. Administrasi Medika", {
+            Text('Copyright © AdBrief AI by PT. Administrasi Medika', {
               size: 10,
-              weight: "bold",
+              weight: 'bold',
             }),
           ],
         }),
       }),
       SizedBox({
         height: 35,
-        borderTop: "1px solid theme.border",
+        borderTop: '1px solid theme.border',
         paddingLeft: 10,
         child: Rows({
           children: [
             Switch({
-              checked: Theme.theme === "dark",
-              label: Theme.theme === "dark" ? "Dark Theme" : "Light Theme",
+              checked: Theme.theme === 'dark',
+              label: Theme.theme === 'dark' ? 'Dark Theme' : 'Light Theme',
               onChange: () => dispatch(toggleTheme()),
             }),
             Expanded(),
@@ -135,5 +135,5 @@ export default function SideBar() {
         }),
       }),
     ],
-  });
+  })
 }

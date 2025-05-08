@@ -1,4 +1,4 @@
-import buildingStore from "../System/Lib/Widgets";
+import buildingStore from '../System/Lib/Widgets'
 
 const codeSample = `
 {
@@ -32,47 +32,47 @@ const codeSample = `
       }
     }
   ]
-}`;
+}`
 
 export interface Chat {
-  role: string;
-  content: string;
+  role: string
+  content: string
 }
 
 const useAdbrief = buildingStore(
-  "ai",
+  'ai',
   {
-    system: "",
+    system: '',
     code: codeSample,
-    chat: "",
+    chat: '',
     working: false,
     history: [] as Chat[],
     configChart: [
       {
         title: {
-          text: "Total Transaksi per Provinsi",
-          left: "center",
+          text: 'Total Transaksi per Provinsi',
+          left: 'center',
         },
         tooltip: {
-          trigger: "axis",
+          trigger: 'axis',
           axisPointer: {
-            type: "hadow",
+            type: 'hadow',
           },
         },
         xAxis: {
-          type: "category",
-          data: ["BALI", "DKI JAKARTA", "JAWA BARAT"],
+          type: 'category',
+          data: ['BALI', 'DKI JAKARTA', 'JAWA BARAT'],
           axisLabel: {
             rotate: 45,
           },
         },
         yAxis: {
-          type: "value",
-          name: "Total Transaksi",
+          type: 'value',
+          name: 'Total Transaksi',
         },
         series: [
           {
-            type: "bar",
+            type: 'bar',
             data: [19623, 53182, 353623],
             barMaxWidth: 40,
             itemStyle: {
@@ -85,10 +85,10 @@ const useAdbrief = buildingStore(
   },
   {
     init: (state, { payload }) => {
-      state.system = payload;
+      state.system = payload
       state.history = [
         {
-          role: "system",
+          role: 'system',
           content: payload,
         },
         // {
@@ -99,7 +99,7 @@ const useAdbrief = buildingStore(
         //   role: "assistant",
         //   content: "Ya saya faham, silahkan ajukan pertanyaan."
         // },
-      ];
+      ]
     },
     setConfigChart: (state, { payload }) => ({
       ...state,
@@ -107,7 +107,7 @@ const useAdbrief = buildingStore(
       history: [
         ...state.history,
         {
-          role: "chart",
+          role: 'chart',
           content: JSON.stringify(payload),
         },
       ],
@@ -116,9 +116,9 @@ const useAdbrief = buildingStore(
       ...state,
       history: state.history.map((chat, index) => {
         if (index === state.history.length - 1) {
-          return { ...chat, content: chat.content + payload };
+          return { ...chat, content: chat.content + payload }
         }
-        return chat;
+        return chat
       }),
     }),
     addChat: (state, { payload }) => ({
@@ -142,18 +142,18 @@ const useAdbrief = buildingStore(
       system: payload,
     }),
   },
-  (inits) => {
-    console.log("run init");
-    fetch("http://localhost/adbrief/Ai/prompt")
-      .then((v) => v.text())
-      .then((v) => {
-        inits(v);
+  inits => {
+    console.log('run init')
+    fetch('http://localhost/adbrief/Ai/prompt')
+      .then(v => v.text())
+      .then(v => {
+        inits(v)
       })
-      .catch((e) => console.log(e));
+      .catch(e => console.log(e))
   },
-  (getState) => ({
+  getState => ({
     getChat: () => getState().history,
   }),
-);
+)
 
-export default useAdbrief;
+export default useAdbrief
