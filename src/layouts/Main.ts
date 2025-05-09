@@ -242,10 +242,10 @@ function process(store: any) {
   scrollTop()
   const orchestrator = new Orchestrator()
   orchestrator.addParameter(SystemPrompts.KNOWLEDGE_PAYOR, {
-    "payor_code": "payor_1",
-    "user_id": "Bambang",
-    "product_id": 40
-  });
+    payor_code: 'payor_1',
+    user_id: 'Bambang',
+    product_id: 40,
+  })
   for (let i = 0; i < store.state.history.length; i++) {
     const chat = store.state.history[i]
     if (chat.role == 'chart') {

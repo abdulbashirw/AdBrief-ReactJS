@@ -78,7 +78,7 @@ Jawaban:
         '',
         'Note:',
         '- Gunakan title pendek saja paling panjang 3 kata.',
-        '',
+        '- Gunakan chart lain :',
         'chart_instruction:',
         JSON.stringify(this.data!.chart_instruction),
       ].join('\n'),

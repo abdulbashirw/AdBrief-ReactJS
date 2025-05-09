@@ -30,6 +30,7 @@ import SqlAgent from '@/System/Lib/ai/src/agents/SqlAgent'
 import RangkumanAgent from '@/System/Lib/ai/src/agents/RangkumanAgent'
 import ChartAgent from '@/System/Lib/ai/src/agents/ChartAgent'
 import ViewChat from '@/layouts/ViewChat'
+import { SystemPrompts } from '@/System/Lib/ai/src/config/config_agent'
 
 function scrollTop() {
   setTimeout(() => {
@@ -157,7 +158,7 @@ export default function ContentDasboardChat() {
                       store.setWorking(true)
                       //store.setChat('Chart Jakarta')
                       store.setChat('Tampilkan chart Jakarta')
-                      processProps(store)
+                      process(store)
                     },
                     child: Center({
                       child: Center({ child: Text('Chart Jakarta') }),
@@ -312,82 +313,12 @@ function process(store: any) {
   scrollTop()
 
   const orchestrator = new Orchestrator()
-
-  for (let i = 0; i < store.state.history.length; i++) {
-    const chat = store.state.history[i]
-    if (chat.role == 'chart') {
-      orchestrator.engine.addMessage('assistant', `Data Chart: \n\n\`\`\`json\n${JSON.stringify(chat.content)}\n\`\`\``)
-    } else {
-      if (chat.role != 'system') {
-        orchestrator.engine.addMessage(chat.role, chat.content)
-      }
-    }
-  }
-  orchestrator.addAgent(new AnswerAgent())
-  orchestrator.addAgent(new SqlAgent())
-  orchestrator.addAgent(new RangkumanAgent())
-  orchestrator.addAgent(new ChartAgent())
-  orchestrator.ask(chat).then(response => {
-    const jsonResponse = response.parseTextOutputToJson()
-    if (jsonResponse == null) {
-      store.addChat({
-        role: 'assistant',
-        content: response.getResponse(),
-      })
-      store.setWorking(false)
-      scrollTop()
-      return
-    }
-    console.log(jsonResponse)
-    console.log('========================================================')
-    console.log('========================================================')
-    console.log('========================================================')
-    orchestrator.setData(response.parseTextOutputToJson())
-    orchestrator.process().then(response => {
-      console.log(response)
-      store.setWorking(false)
-
-      // check jika agent terakhir adalah agen rangkuman maka munculkan resultnya
-      const rangkumanExists = response.filter((x: any) => x.agen == 'agen_rangkuman')
-      if (rangkumanExists.length) {
-        store.addChat({
-          role: 'assistant',
-          content: rangkumanExists[0].result,
-        })
-      }
-
-      // check if agent_chart exists
-      const agentChartExists = response.filter((x: any) => x.agen == 'agent_chart')
-      if (agentChartExists.length) {
-        store.addChat({
-          role: 'chart',
-          content: agentChartExists[0].result,
-        })
-      }
-
-      scrollTop()
-    })
+  orchestrator.addParameter(SystemPrompts.KNOWLEDGE, {
+    payor_code: payor_code,
+    user_id: 'Bambang',
+    product_id: 40,
   })
-}
 
-function processProps(store: any) {
-  if (!store.state.chat) {
-    Snackbar({
-      title: 'Info',
-      message: 'Please insert message',
-    })
-    store.setWorking(false)
-    return
-  }
-
-  const chat = store.state.chat
-  store.setChat('')
-  store.addChat({
-    role: 'user',
-    content: chat,
-  })
-  scrollTop()
-  const orchestrator = new Orchestrator()
   for (let i = 0; i < store.state.history.length; i++) {
     const chat = store.state.history[i]
     if (chat.role == 'chart') {

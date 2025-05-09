@@ -15,11 +15,11 @@ export default class Orchestrator {
     // this.engine.setSystemMessage(SystemPrompts.KNOWLEDGE.toString().replace(/\{payor_code\}/g, payor_code))
   }
 
-  addParameter(message: string, parameter: {[key: string]: any}) {
+  addParameter(message: string, parameter: { [key: string]: any }) {
     Object.keys(parameter).forEach(key => {
-      message = message.replaceAll(`{${key}}`, parameter[key]);
+      message = message.replaceAll(`{${key}}`, parameter[key])
     })
-    this.engine.setSystemMessage(message);
+    this.engine.setSystemMessage(message)
   }
 
   setData(data: any) {

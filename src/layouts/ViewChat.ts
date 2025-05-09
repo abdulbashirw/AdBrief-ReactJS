@@ -34,6 +34,7 @@ export default function ViewChat() {
                         Expanded(),
                         Container({
                           maxWidth: maxWidth,
+                          cursor: 'text',
                           padding: 20,
                           paddingTop: 5,
                           paddingBottom: 5,
