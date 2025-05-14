@@ -17,6 +17,8 @@ import { RootState } from '@/store'
 import AddRoundedIcon from '@mui/icons-material/AddRounded'
 import FullscreenRoundedIcon from '@mui/icons-material/FullscreenRounded'
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded'
+import GridViewIcon from '@mui/icons-material/GridView'
+import BorderColorIcon from '@mui/icons-material/BorderColor'
 import { useTheme } from '@/hooks/useTheme'
 
 export default function TambahContentDasboard({ setTambahDashboard }) {
@@ -34,29 +36,42 @@ export default function TambahContentDasboard({ setTambahDashboard }) {
             borderRadius: 10,
             width: 100,
             border: '1px solid theme.border',
+            cursor: 'pointer',
             child: Rows({
               center: true,
               children: [IconMui(FullscreenRoundedIcon), Space(5), Text('Fullscreen', { size: 14, weight: 'bold' })],
             }),
           }),
           Space(10),
-          Space(10),
           SizedBox({
             padding: 5,
             borderRadius: 10,
             width: 100,
             border: '1px solid theme.border',
+            cursor: 'pointer',
             child: Rows({
               center: true,
               children: [IconMui(LogoutRoundedIcon), Space(5), Text('Import', { size: 14, weight: 'bold' })],
             }),
           }),
           Expanded({
-            child: Center({
-              child: Text('Judul Dashboard'),
+            child: Rows({
+              center: true,
+              children: [Text('Judul Dashboard', { size: 22, weight: 'bold' }), Space(5), IconMui(BorderColorIcon)],
             }),
           }),
-          Text('Judul'),
+          Space(10),
+          SizedBox({
+            padding: 5,
+            borderRadius: 10,
+            width: 100,
+            border: '1px solid theme.border',
+            cursor: 'pointer',
+            child: Rows({
+              center: true,
+              children: [IconMui(GridViewIcon), Space(5), Text('Atur Template', { size: 14, weight: 'bold' })],
+            }),
+          }),
         ],
       }),
       Space(20),
@@ -75,7 +90,7 @@ export default function TambahContentDasboard({ setTambahDashboard }) {
                 Space(20),
                 Row({
                   children: [
-                    Expanded({
+                    SizedBox({
                       //backgroundColor: 'theme.background',
                       borderRadius: 10,
                       //border: '1px solid theme.border',
@@ -83,7 +98,9 @@ export default function TambahContentDasboard({ setTambahDashboard }) {
                         children: [
                           Expanded({
                             child: SizedBox({
-                              padding: 5,
+                              padding: 50,
+                              paddingLeft: 100,
+                              paddingRight: 100,
                               backgroundColor: 'theme.background',
                               borderRadius: 10,
                               border: '1px solid theme.border',

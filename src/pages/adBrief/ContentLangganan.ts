@@ -16,8 +16,25 @@ import ContentBasic from './Basic'
 import ContentHealthBenefit from './HealthBenefit'
 import ContentBusiness from './Business'
 import ContentUltimate from './Ultimate'
+import { useState } from 'react'
+
+const contentItems = [
+  {
+    contentSub: ContentBasic(),
+  },
+  {
+    contentSub: ContentHealthBenefit(),
+  },
+  {
+    contentSub: ContentBusiness(),
+  },
+  {
+    contentSub: ContentUltimate(),
+  },
+]
 
 export default function ContentLangganan() {
+  const [hover, setHover] = useState<number>(-1)
   const Theme = useTheme()
   const { colors } = useSelector((state: RootState) => state.theme)
 
@@ -52,53 +69,22 @@ export default function ContentLangganan() {
                       }),
                       Space(50),
                       Rows({
-                        children: [
+                        children: contentItems.flatMap((item, index) => [
                           Space(20),
                           Expanded({
+                            onMouseEnter: () => setHover(index),
+                            onMouseLeave: () => setHover(-1),
                             child: Container({
                               height: 'auto',
                               padding: 10,
-                              backgroundColor: 'theme.background',
+                              backgroundColor: hover === index ? '#303030' : 'theme.background',
                               borderRadius: 10,
                               border: '1px solid theme.border',
-                              child: ContentBasic(),
+                              child: item.contentSub,
                             }),
                           }),
                           Space(20),
-                          Expanded({
-                            child: Container({
-                              height: 'auto',
-                              padding: 10,
-                              backgroundColor: 'theme.background',
-                              borderRadius: 10,
-                              border: '1px solid theme.border',
-                              child: ContentHealthBenefit(),
-                            }),
-                          }),
-                          Space(20),
-                          Expanded({
-                            child: Container({
-                              height: 'auto',
-                              padding: 10,
-                              backgroundColor: '#303030',
-                              borderRadius: 10,
-                              border: '1px solid theme.border',
-                              child: ContentBusiness(),
-                            }),
-                          }),
-                          Space(20),
-                          Expanded({
-                            child: Container({
-                              height: 'auto',
-                              padding: 10,
-                              backgroundColor: 'theme.background',
-                              borderRadius: 10,
-                              border: '1px solid theme.border',
-                              child: ContentUltimate(),
-                            }),
-                          }),
-                          Space(20),
-                        ],
+                        ]),
                       }),
                       Space(50),
                     ],

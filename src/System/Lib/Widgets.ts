@@ -1467,7 +1467,15 @@ export function Markdown(props: PropsWidget = {}) {
     ...props,
     mui: {
       markdown: props.markdown || '',
-      components: props.components || {},
+      components: {
+        root: {
+          style: {
+            cursor: 'text',
+            userSelect: 'text',
+          },
+        },
+        ...props.components, // Menambahkan komponen lain yang ada
+      },
     },
   })
 }

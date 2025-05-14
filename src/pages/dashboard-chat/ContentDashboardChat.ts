@@ -29,8 +29,8 @@ import AnswerAgent from '@/System/Lib/ai/src/agents/AnswerAgent'
 import SqlAgent from '@/System/Lib/ai/src/agents/SqlAgent'
 import RangkumanAgent from '@/System/Lib/ai/src/agents/RangkumanAgent'
 import ChartAgent from '@/System/Lib/ai/src/agents/ChartAgent'
-import ViewChat from '@/layouts/ViewChat'
 import { SystemPrompts } from '@/System/Lib/ai/src/config/config_agent'
+import ViewChat from '@/layouts/ViewChat'
 
 function scrollTop() {
   setTimeout(() => {

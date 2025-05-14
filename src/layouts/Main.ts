@@ -28,7 +28,7 @@ import AnswerAgent from '../System/Lib/ai/src/agents/AnswerAgent'
 import SqlAgent from '../System/Lib/ai/src/agents/SqlAgent'
 import RangkumanAgent from '../System/Lib/ai/src/agents/RangkumanAgent'
 import ChartAgent from '../System/Lib/ai/src/agents/ChartAgent'
-import ViewChat from './ViewChat'
+import ViewChat from './ViewChat.tsx'
 import { useTheme } from '@/hooks/useTheme'
 import { SystemPrompts } from '@/System/Lib/ai/src/config/config_agent'
 
