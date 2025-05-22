@@ -1450,8 +1450,7 @@ export function Positioned(props: PropsWidget = {}) {
   props.position = 'absolute'
   return new Widgets(props)
 }
-
-export function Widget(widget: any, props: PropsWidget = {}, children?: any) {
+export function Widget<T extends PropsWidget>(widget: any, props: T = {} as T, children?: any) {
   if (children) {
     return React.createElement(widget, props, children)
   } else {
@@ -2721,9 +2720,9 @@ export default function buildingStore<
   R extends SliceCaseReducers<T>,
   C extends Record<string, (...args: any[]) => any>,
 >(
-  name: string,
-  initialState: T,
-  reducers: R,
+  name?: string,
+  initialState?: T,
+  reducers?: R,
   init?: (dispatch: any) => void,
   computedState?: (getState: () => T) => C,
 ) {

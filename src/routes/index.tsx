@@ -1,5 +1,4 @@
 import NotFound from '../pages/NotFound'
-import EditorLayout from '../layouts/EditorLayout'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import MainLayout from '../layouts/MainLayout'
 import Sample from '../layouts/Sample'
@@ -27,7 +26,6 @@ const AppRoutes = () => {
           <Route path="/dashboard-chat" element={<ContentDasboardChat />} />
           <Route path="/user-management" element={<ContentUserManagement />} />
         </Route>
-        <Route path="/editor" element={<EditorLayout />}></Route>
         <Route path="/main" element={<MainLayout />}></Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

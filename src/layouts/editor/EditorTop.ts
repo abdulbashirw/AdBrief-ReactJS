@@ -112,7 +112,7 @@ export default function HeaderTop() {
                     child: ListItemText({
                       child: Rows({
                         children: [
-                          item.icon ? Container({ width: 30, childReact: item.icon }) : SizedBox({ width: 30 }),
+                          item.icon ? Container({ width: 30, child: item.icon }) : SizedBox({ width: 30 }),
                           Text(item.label),
                         ],
                       }),

@@ -851,7 +851,7 @@ export function calculateTotal(values: (number | string)[]): number | string {
     return `${total}%`
   }
 
-  const value = values.reduce((acc: number, val) => acc + Number(val), 0)
+  const value = Number(values.reduce((acc: number, val) => acc + Number(val), 0))
   if (value <= 0) return 'auto'
   return value
 }

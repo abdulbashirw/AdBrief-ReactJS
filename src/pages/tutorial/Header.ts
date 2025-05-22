@@ -172,7 +172,7 @@ export default function Header() {
                             item.icon,
                             Space(10),
                             Expanded({
-                              child: Text(item.label)
+                              child: Text(item.label),
                             }),
                             item.iconAction ? SizedBox({ width: 30, child: item.iconAction }) : SizedBox({ width: 30 }),
                             Space(10),

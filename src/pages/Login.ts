@@ -35,20 +35,11 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const [username, setUsername] = useState('')
   const [touched, setTouched] = useState(false)
-  const [loading, setLoading] = useState(false)
   const [touchedPwd, setTouchedPwd] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [buttonDisabled, setButtonDisabled] = useState(true)
 
   const nav = useNavigate()
-
-  useEffect(() => {
-    if (loading) {
-      setButtonDisabled(true)
-      return
-    }
-    return
-  }, [loading])
 
   useEffect(() => {
     console.log('Init apps')
@@ -94,7 +85,6 @@ export default function Login() {
     child: Button('Login', {
       disabled: buttonDisabled,
       confirm: true,
-      loading,
       click: () => {
         nav('/')
       },

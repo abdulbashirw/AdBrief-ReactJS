@@ -38,24 +38,28 @@ const descRiwayatItems = [
     content: 'Content 1',
   },
   {
-    title: '',
+    title: 'Halaman',
     content: 'Content 2',
   },
   {
-    title: '',
-    content: 'Conetent 3 :',
+    title: 'Halaman',
+    content: 'Content 2',
   },
   {
-    title: '',
-    content: 'Conetent 4 :',
+    title: 'Halaman',
+    content: 'Content 2',
   },
   {
-    title: '',
-    content: 'Conetent 5 :',
+    title: 'Halaman',
+    content: 'Content 2',
   },
   {
-    title: '',
-    content: 'Conetent 6 :',
+    title: 'Halaman',
+    content: 'Content 2',
+  },
+  {
+    title: 'Halaman',
+    content: 'Content 2',
   },
 ]
 
@@ -90,7 +94,7 @@ export default function ContentDasboard() {
                       size: 20,
                       fontWeight: 'bold',
                     }),
-                    Space(20),
+                    Space(15),
                     Row({
                       children: [
                         Expanded({
@@ -171,10 +175,11 @@ export default function ContentDasboard() {
                         ),
                       ],
                     }),
-                    Space(50),
+                    Space(25),
                     Row({
                       children: [
                         Text('Riwayat Dashboard', {
+                          alignContent: 'center',
                           size: 20,
                           fontWeight: 'bold',
                         }),
@@ -193,8 +198,7 @@ export default function ContentDasboard() {
                         }),
                       ],
                     }),
-
-                    Space(20),
+                    Space(10),
                     Widget(() =>
                       LayoutBuilder({
                         builder: ({ width }) =>

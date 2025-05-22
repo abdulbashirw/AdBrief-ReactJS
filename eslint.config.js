@@ -24,26 +24,26 @@ export default tseslint.config(
     rules: {
       ...reactHooks.configs.recommended.rules,
       'prettier/prettier': 'error',
-      // 'react-refresh/only-export-components': [
-      //   'warn',
-      //   { allowConstantExport: true },
-      // ],
+      'react-refresh/only-export-components': [
+        'warn',
+        { allowConstantExport: true },
+      ],
       '@typescript-eslint/no-duplicate-enum-values': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-unused-vars': 'off',
       '@typescript-eslint/no-unsafe-function-type': 'off',
       'react-hooks/rules-of-hooks': 'off',
       'react-hooks/exhaustive-deps': 'off',
-      // 'unused-imports/no-unused-imports': 'error',
-      // 'unused-imports/no-unused-vars': [
-      //   'error',
-      //   {
-      //     vars: 'all',
-      //     varsIgnorePattern: '^_',
-      //     args: 'after-used',
-      //     argsIgnorePattern: '^_',
-      //   },
-      // ],
+      'unused-imports/no-unused-imports': 'error',
+      'unused-imports/no-unused-vars': [
+        'error',
+        {
+          vars: 'all',
+          varsIgnorePattern: '^_',
+          args: 'after-used',
+          argsIgnorePattern: '^_',
+        },
+      ],
     },
   },
 )

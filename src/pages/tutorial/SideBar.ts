@@ -119,18 +119,6 @@ export default function SideBar() {
               onChange: () => dispatch(toggleTheme()),
             }),
             Expanded(),
-            // Click({
-            //   click: () => {
-            //     setWidth(width == 300 ? 60 : 300);
-            //   },
-            //   width: width !== 300 ? 60 : 30,
-            //   height: 30,
-            //   radius: 30,
-            //   margin: 8,
-            //   child: Center({
-            //     child: Icon(width !== 300 ? "arrow_circle_right" : "arrow_circle_left")
-            //   })
-            // })
           ],
         }),
       }),

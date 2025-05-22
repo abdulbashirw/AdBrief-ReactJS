@@ -183,7 +183,7 @@ export default function Main() {
                         value: store.state.chat,
                         multiline: true,
                         fullWidth: true,
-                        // rows: row,
+                        rows: row,
                         minRows: 1,
                         maxRows: 5,
                         onChange: (e: any) => {

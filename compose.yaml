@@ -1,0 +1,50 @@
+services:
+  dev:
+    container_name: adbrief-dev
+    image: gcr.io/project-digital-admedika/adbrief-dev:1.0.0
+    build:
+      context: .
+      target: dev
+      platforms:
+        - linux/amd64
+    ports:
+      - '443:443'
+      - '80:80'
+    environment:
+      NODE_ENV: production
+
+  staging:
+    container_name: adbrief-staging
+    image: gcr.io/project-digital-admedika/adbrief-staging:1.0.0
+    build:
+      context: .
+      target: staging
+      platforms:
+        - linux/amd64
+    ports:
+      - '443:443'
+      - '80:80'
+    environment:
+      NODE_ENV: production
+
+  prod:
+    container_name: adbrief-prod
+    image: gcr.io/project-digital-admedika/adbrief-prod:1.0.0
+    build:
+      context: .
+      target: prod
+      platforms:
+        - linux/amd64
+    ports:
+      - '443:443'
+      - '80:80'
+    environment:
+      NODE_ENV: production
+
+volumes:
+  node_modules:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: node_modules

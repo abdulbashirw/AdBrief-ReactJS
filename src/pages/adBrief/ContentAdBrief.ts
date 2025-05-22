@@ -1,6 +1,5 @@
 import { useSelector } from 'react-redux'
 import {
-  Button,
   Center,
   Column,
   Container,
@@ -17,11 +16,12 @@ import { RootState, useAppDispatch, useAppSelector } from '../../store'
 import { useTheme } from '@/hooks/useTheme'
 import logo from '../../assets/images/adbrief.png'
 import logo1 from '../../assets/images/adbrief1.png'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { setActiveMenu } from '@/store/slices/menu.slice'
 
 export default function ContentAdBrief() {
+  const [hover, setHover] = useState<number>(-1)
   const Theme = useTheme()
   const { colors } = useSelector((state: RootState) => state.theme)
 
@@ -35,6 +35,23 @@ export default function ContentAdBrief() {
       dispatch(setActiveMenu(activeMenu))
     }
   }, [location.pathname])
+
+  const contentItems = [
+    {
+      Title: 'Mulai Percakapan Dengan AI',
+      Action: () => {
+        dispatch(setActiveMenu())
+        nav('/dashboard-chat')
+      },
+    },
+    {
+      Title: 'Buat Dashboard',
+      Action: () => {
+        dispatch(setActiveMenu())
+        nav('/dashboard')
+      },
+    },
+  ]
 
   return Column({
     width: '100%',
@@ -79,39 +96,25 @@ export default function ContentAdBrief() {
                       Space(50),
                       Rows({
                         center: true,
-                        children: [
+                        children: contentItems.flatMap((item, index) => [
                           Container({
+                            onMouseEnter: () => setHover(index),
+                            onMouseLeave: () => setHover(-1),
                             height: 'auto',
                             padding: 10,
                             paddingLeft: 50,
                             paddingRight: 50,
-                            backgroundColor: 'theme.background',
+                            // backgroundColor: 'theme.background',
+                            backgroundColor: hover === index ? '#212121' : '#FFFFFF',
+                            //color: hover === index ? '#212121' : '#',
                             borderRadius: 10,
                             border: '1px solid theme.border',
                             cursor: 'pointer',
-                            child: Text('Mulai Percakapan dengan AI'),
-                            onClick: () => {
-                              dispatch(setActiveMenu())
-                              nav('/dashboard-chat')
-                            },
+                            child: Text(item.Title, { textColor: hover === index ? '#FFFFFF' : '#212121' }),
+                            onClick: item.Action,
                           }),
                           Space(20),
-                          Container({
-                            height: 'auto',
-                            padding: 10,
-                            paddingLeft: 50,
-                            paddingRight: 50,
-                            backgroundColor: 'theme.background',
-                            borderRadius: 10,
-                            border: '1px solid theme.border',
-                            cursor: 'pointer',
-                            child: Text('Buat Dashboard'),
-                            onClick: () => {
-                              dispatch(setActiveMenu())
-                              nav('/dashboard')
-                            },
-                          }),
-                        ],
+                        ]),
                       }),
                       Space(125),
                       SizedBox({
@@ -134,11 +137,22 @@ export default function ContentAdBrief() {
                       SizedBox({
                         padding: 20,
                         center: true,
-                        textAlign: 'Center',
-                        fontSize: '14px',
                         child: Center({
-                          child: Button('Mulai Berlangganan', {
-                            padding: 8,
+                          child: SizedBox({
+                            onMouseEnter: () => setHover(2),
+                            onMouseLeave: () => setHover(-3),
+                            height: 'auto',
+                            width: '100',
+                            padding: 10,
+                            paddingLeft: 50,
+                            paddingRight: 50,
+                            // backgroundColor: 'theme.background',
+                            backgroundColor: hover === 2 ? '#212121' : '#FFFFFF',
+                            //color: hover === index ? '#212121' : '#',
+                            borderRadius: 10,
+                            border: '1px solid theme.border',
+                            cursor: 'pointer',
+                            child: Text('Mulai Langganan', { textColor: hover === 2 ? '#FFFFFF' : '#212121' }),
                             onClick: () => {
                               dispatch(setActiveMenu())
                               nav('/langganan')
