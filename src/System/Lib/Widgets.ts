@@ -2423,6 +2423,7 @@ export interface PropsWidget {
     | 'initial'
     | 'revert'
     | 'revert-layer'
+  objectPosition?: string
   width?: number | string
   height?: number | string
   minWidth?: number | string
@@ -2673,6 +2674,7 @@ export function applyStyles(style: any, option: any) {
 
   // Image
   if (option.objectFit) style.objectFit = option.objectFit
+  if (option.objectPosition) style.objectPosition = option.objectPosition
   if (option.inset) style.inset = option.inset
   if (option.pointerEvents) style.pointerEvents = option.pointerEvents
 

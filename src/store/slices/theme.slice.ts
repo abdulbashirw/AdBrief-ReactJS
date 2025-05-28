@@ -7,11 +7,19 @@ export interface ThemeState {
   colors: ThemeType
 }
 
+const getInitialTheme = (): 'light' | 'dark' => {
+  if (typeof window !== 'undefined') {
+    const storedTheme = localStorage.getItem('theme')
+    return storedTheme === 'dark' ? 'dark' : 'light'
+  }
+  return 'light'
+}
+
+const localTheme = getInitialTheme()
+
 const initialState: ThemeState = {
-  // theme: 'light',
-  // colors: lightTheme
-  theme: 'dark',
-  colors: darkTheme,
+  theme: getInitialTheme(),
+  colors: localTheme === 'light' ? lightTheme : darkTheme,
 }
 
 const themeSlice = createSlice({

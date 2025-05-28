@@ -36,29 +36,35 @@ const descDasboardItems = [
     title: 'Halaman',
     content: 'Content 2',
   },
+  {
+    title: 'Halaman',
+    content: 'Content 2',
+  },
 ]
 
 export default function TambahContentDasboard({ setTambahDashboard }) {
   const Theme = useTheme()
   const { colors } = useSelector((state: RootState) => state.theme)
+  let modalRef: any | undefined = undefined
 
-  function modal(Content: () => typeof Widget) {
-    const modal = Modal({
+  //console.log('INTERNAL_BE_URL ==>> ', INTERNAL_BE_URL)
+
+  function modal(Content: (props: any) => typeof Widget) {
+    modalRef = Modal({
       theme: Theme.colors,
       backdropFilter: 'blur(2px)',
       child: Positioned({
         backgroundColor: 'theme.backgroundPaper',
-
         radius: 10,
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
         minWidth: 700,
         height: 'auto',
-        child: Content,
+        child: () => Content({ modal: modalRef }),
       }),
     })
-    return modal
+    return modalRef
   }
 
   return Column({
@@ -132,28 +138,16 @@ export default function TambahContentDasboard({ setTambahDashboard }) {
                 Row({
                   children: [
                     SizedBox({
-                      //backgroundColor: 'theme.background',
+                      padding: 100,
+                      backgroundColor: 'theme.background',
                       borderRadius: 10,
-                      //border: '1px solid theme.border',
-                      child: Column({
-                        children: [
-                          Expanded({
-                            child: SizedBox({
-                              padding: 50,
-                              paddingLeft: 100,
-                              paddingRight: 100,
-                              backgroundColor: 'theme.background',
-                              borderRadius: 10,
-                              border: '1px solid theme.border',
-                              center: true,
-                              onClick: () => {
-                                modal(ContentTambahDasboard)
-                              },
-                              child: IconMui(AddRoundedIcon, { size: 50 }),
-                            }),
-                          }),
-                        ],
-                      }),
+                      cursor: 'pointer',
+                      border: '1px solid theme.border',
+                      center: true,
+                      onClick: () => {
+                        modal(ContentTambahDasboard)
+                      },
+                      child: IconMui(AddRoundedIcon, { size: 50 }),
                     }),
                     Space(20),
                     Widget(() =>
@@ -162,7 +156,7 @@ export default function TambahContentDasboard({ setTambahDashboard }) {
                           Row({
                             flexWrap: 'wrap',
                             gap: 10,
-                            children: [...descDasboardItems.slice(0, 3).map(item => historyContent({ item, width }))],
+                            children: [...descDasboardItems.slice(0).map(item => historyContent({ item, width }))],
                           }),
                       }).builder(),
                     ),

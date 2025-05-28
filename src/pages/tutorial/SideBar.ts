@@ -61,8 +61,11 @@ export default function SideBar() {
         paddingTop: 25,
         child: Center({
           child: Button('Back in Chat', {
+            padding: 5,
             icon: 'undo',
-            height: 35,
+            backgroundColor: 'theme.background',
+            border: '1px solid theme.border',
+            fontColor: 'theme.textPrimary',
             onClick: () => {
               dispatch(setActiveMenu())
               nav('/')
@@ -70,6 +73,7 @@ export default function SideBar() {
           }),
         }),
       }),
+
       SizedBox({
         paddingTop: 25,
         paddingLeft: 12,

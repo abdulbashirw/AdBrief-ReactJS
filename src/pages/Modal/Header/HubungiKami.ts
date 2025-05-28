@@ -1,8 +1,9 @@
 import { useSelector } from 'react-redux'
-import { Column, Expanded, Space, Text } from '../../../System/Lib/Widgets'
+import { Column, Expanded, IconMui, Rows, SizedBox, Space, Text, TextField } from '../../../System/Lib/Widgets'
 import { RootState } from '../../../store'
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
 
-export default function ContentHubungiKami() {
+export default function ContentHubungiKami({ modal }) {
   const { colors } = useSelector((state: RootState) => state.theme)
 
   return Column({
@@ -13,11 +14,40 @@ export default function ContentHubungiKami() {
     child: Column({
       padding: 20,
       children: [
-        Text('Judul Hubungi Kami', { size: 30 }),
-        Space(20),
-        Expanded({
-          child: Text('Content ', { size: 30 }),
+        SizedBox({
+          child: Rows({
+            children: [
+              Text('Hubungi Kami', { size: 20 }),
+              Expanded({}),
+              IconMui(CloseRoundedIcon, {
+                size: 20,
+                onClick: () => {
+                  modal?.unMounting()
+                },
+              }),
+            ],
+          }),
         }),
+        Space(10),
+        SizedBox({
+          height: 5,
+          borderTop: '1px solid theme.border',
+        }),
+        Space(25),
+        Expanded({
+          child: Column({
+            center: true,
+            children: [
+              Text('Judul Dashboard', { size: 16 }),
+              Space(10),
+              TextField({
+                placeholder: 'Input Judul Dasboard ...',
+                fullWidth: true,
+              }),
+            ],
+          }),
+        }),
+        Space(25),
       ],
     }),
   }).builder()

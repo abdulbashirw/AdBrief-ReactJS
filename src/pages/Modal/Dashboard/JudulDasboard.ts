@@ -3,7 +3,7 @@ import { Column, Expanded, IconMui, Rows, SizedBox, Space, Text, TextField } fro
 import { RootState } from '../../../store'
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
 
-export default function ContentJudulDasboard() {
+export default function ContentJudulDasboard({ modal }) {
   const { colors } = useSelector((state: RootState) => state.theme)
 
   return Column({
@@ -21,7 +21,9 @@ export default function ContentJudulDasboard() {
               Expanded({}),
               IconMui(CloseRoundedIcon, {
                 size: 20,
-                onClick: () => ({}),
+                onClick: () => {
+                  modal?.unMounting()
+                },
               }),
             ],
           }),

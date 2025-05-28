@@ -6,11 +6,9 @@ import {
   Expanded,
   IconButton,
   IconMui,
-  ListItemText,
-  MenuItem,
   Row,
   Rows,
-  Select,
+  SingleChildScrollView,
   SizedBox,
   Space,
   Text,
@@ -21,27 +19,54 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
 import { useState } from 'react'
 import SearchIcon from '@mui/icons-material/Search'
 
-const totalRowPages = [
+const descItems = [
   {
-    value: '1',
+    content: 'General Overview',
   },
   {
-    value: '5',
+    content: 'Transaction Overview',
   },
   {
-    value: '20',
+    content: 'Diseases Overview',
   },
   {
-    value: '50',
+    content: 'General Overview',
+  },
+  {
+    content: 'Transaction Overview',
+  },
+  {
+    content: 'Diseases Overview',
+  },
+  {
+    content: 'Transaction Overview',
+  },
+  {
+    content: 'Diseases Overview',
+  },
+  {
+    content: 'Transaction Overview',
+  },
+  {
+    content: 'Diseases Overview',
+  },
+  {
+    content: 'General Overview',
+  },
+  {
+    content: 'Transaction Overview',
+  },
+  {
+    content: 'Diseases Overview',
   },
 ]
 
-export default function ContentImportDasboard() {
+export default function ContentImportDasboard({ modal }) {
   const { colors } = useSelector((state: RootState) => state.theme)
   //const dispatch = useDispatch()
-  const [countRow, setCountRow] = useState(3)
   const [sercGrafik, setSercGrafik] = useState('')
   const [showSercGrafik, setShowSercGrafik] = useState(false)
+  const [hover, setHover] = useState<number>(-1)
 
   const sercGrafikComponent = TextField({
     value: sercGrafik,
@@ -54,19 +79,9 @@ export default function ContentImportDasboard() {
     onChange: (e: any) => setSercGrafik(e.target.value),
   })
 
-  const handleChangeCountRow = (e: any) => {
-    const value = e.target.value
-
-    setCountRow(value)
-    // dispatch(
-    //   getListAllDataHC4UThunk({
-    //     token,
-    //     countRow: value,
-    //     search,
-    //     page: data?.pagination.page.toString(),
-    //   }),
-    // )
-  }
+  // useEffect(() => {
+  //   console.log(modal)
+  // }, [modal])
 
   return Column({
     width: '100%',
@@ -83,7 +98,9 @@ export default function ContentImportDasboard() {
               Expanded({}),
               IconMui(CloseRoundedIcon, {
                 size: 20,
-                onClick: () => {},
+                onClick: () => {
+                  modal?.unMounting()
+                },
               }),
             ],
           }),
@@ -102,33 +119,37 @@ export default function ContentImportDasboard() {
               Space(30),
               Text('Daftar Grafik Tersimpan', { size: 16 }),
               Space(20),
-              Select({
-                fullWidth: true,
-                borderRadius: '10px',
-                sx: {
-                  fieldset: {
-                    border: '1px solid theme.border',
-                  },
-                  backgroundColor: 'theme.backgroundpaper',
-                },
-                value: countRow,
-                onChange: handleChangeCountRow,
-                children: [
-                  ...totalRowPages.map(currency => {
-                    return MenuItem({
-                      key: currency.value,
-                      value: currency.value,
-                      color: 'theme.textPrimary',
-                      child: ListItemText({
-                        child: Text(currency.value, {
-                          fontSize: 14,
-                          color: 'theme.textPrimary',
-                          fontWeight: 400,
+              SizedBox({
+                height: '200px',
+                width: '99%',
+                borderRadius: 10,
+                border: '1px solid theme.border',
+                child: SingleChildScrollView({
+                  child: Column({
+                    center: true,
+                    padding: 5,
+                    gap: 5,
+                    children: [
+                      ...descItems.map((item, index) =>
+                        Container({
+                          onMouseEnter: () => setHover(index),
+                          onMouseLeave: () => setHover(-1),
+                          padding: 10,
+                          width: '90%',
+                          backgroundColor: hover === index ? '#303030' : 'theme.backgroundPaper',
+                          borderRadius: 10,
+                          alignContent: 'center',
+                          textAlign: 'center',
+                          child: Text(item.content, {
+                            alignContent: 'center',
+                            textColor: hover === index ? 'white' : 'theme.textPrimary',
+                          }),
+                          onClick: () => {},
                         }),
-                      }),
-                    })
+                      ),
+                    ],
                   }),
-                ],
+                }),
               }),
             ],
           }),

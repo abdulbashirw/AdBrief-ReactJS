@@ -11,7 +11,6 @@ import {
   MenuItem,
   ListItemText,
   Divider,
-  Switch,
   Column,
   Modal,
   Positioned,
@@ -22,18 +21,19 @@ import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded'
 import CallRoundedIcon from '@mui/icons-material/CallRounded'
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded'
 import { useTheme } from '../../hooks/useTheme'
-import { toggleTheme } from '../../store/slices/theme.slice'
-import { useDispatch } from 'react-redux'
-import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded'
-import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded'
 import ContentHubungiKami from '../Modal/Header/HubungiKami'
+import ContentPengaturan from '../Modal/Header/Pengaturan'
 
 export default function Header() {
-  const dispatch = useDispatch()
+  //const dispatch = useDispatch()
   const Theme = useTheme()
 
-  function modal(Content: () => typeof Widget) {
-    const modal = Modal({
+  let modalRef: any | undefined = undefined
+
+  //console.log('INTERNAL_BE_URL ==>> ', INTERNAL_BE_URL)
+
+  function modal(Content: (props: any) => typeof Widget) {
+    modalRef = Modal({
       theme: Theme.colors,
       backdropFilter: 'blur(2px)',
       child: Positioned({
@@ -43,36 +43,36 @@ export default function Header() {
         left: '50%',
         transform: 'translate(-50%, -50%)',
         minWidth: 700,
-        height: '80%',
-        child: Content,
+        height: 'auto',
+        child: () => Content({ modal: modalRef }),
       }),
     })
-    return modal
+    return modalRef
   }
 
   const menuItems = [
     {
-      label: 'Single',
+      label: 'Pengaturan',
       icon: IconMui(SettingsRoundedIcon),
-      content: ContentHubungiKami(),
+      content: ContentPengaturan,
     },
-    {
-      label: Theme.theme === 'dark' ? 'Mode Dark' : 'Mode Light',
-      icon: Theme.theme === 'dark' ? IconMui(DarkModeRoundedIcon) : IconMui(LightModeRoundedIcon),
-      iconAction: Switch({
-        checked: Theme.theme === 'dark',
-        onChange: () => dispatch(toggleTheme()),
-      }),
-    },
+    // {
+    //   label: Theme.theme === 'dark' ? 'Mode Dark' : 'Mode Light',
+    //   icon: Theme.theme === 'dark' ? IconMui(DarkModeRoundedIcon) : IconMui(LightModeRoundedIcon),
+    //   iconAction: Switch({
+    //     checked: Theme.theme === 'dark',
+    //     onChange: () => dispatch(toggleTheme()),
+    //   }),
+    // },
     {
       label: 'Hubungi Kami ',
       icon: IconMui(CallRoundedIcon),
-      content: ContentHubungiKami(),
+      content: ContentHubungiKami,
     },
     {
       label: 'Keluar',
       icon: IconMui(LogoutRoundedIcon),
-      content: ContentHubungiKami(),
+      content: ContentHubungiKami,
     },
   ]
 
@@ -140,7 +140,6 @@ export default function Header() {
                   }),
                 })
               },
-              //child: Center({ child: IconMui(MoreVertIcon) })
               child: Rows({
                 children: [
                   SizedBox({

@@ -77,7 +77,8 @@ export default function ContentLangganan() {
                             child: Container({
                               height: 'auto',
                               padding: 10,
-                              backgroundColor: hover === index ? '#303030' : 'theme.background',
+                              backgroundColor: hover === index ? '#303030' : 'theme.backgroundPaper',
+                              color: 'theme.color',
                               borderRadius: 10,
                               border: '1px solid theme.border',
                               child: item.contentSub,

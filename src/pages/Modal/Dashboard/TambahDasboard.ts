@@ -16,7 +16,7 @@ import { RootState } from '../../../store'
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
 import ContentDasboardChat from '@/pages/dashboard-chat/ContentDashboardChat'
 
-export default function ContentTambahDasboard() {
+export default function ContentTambahDasboard({ modal }) {
   const { colors } = useSelector((state: RootState) => state.theme)
 
   return Column({
@@ -34,7 +34,9 @@ export default function ContentTambahDasboard() {
               Expanded({}),
               IconMui(CloseRoundedIcon, {
                 size: 20,
-                onClick: () => {},
+                onClick: () => {
+                  modal?.unMounting()
+                },
               }),
             ],
           }),
@@ -71,10 +73,11 @@ export default function ContentTambahDasboard() {
         Row({
           justifyContent: 'right',
           child: Button('Simpan', {
-            justifyContent: 'right',
             padding: 10,
             width: 100,
-            onClick: () => {},
+            backgroundColor: 'theme.background',
+            border: '1px solid theme.border',
+            fontColor: 'theme.textPrimary',
           }),
         }),
       ],
