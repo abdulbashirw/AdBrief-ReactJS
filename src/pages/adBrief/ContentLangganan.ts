@@ -1,4 +1,3 @@
-import { useSelector } from 'react-redux'
 import {
   Column,
   Container,
@@ -10,7 +9,6 @@ import {
   Space,
   Text,
 } from '../../System/Lib/Widgets'
-import { RootState } from '../../store'
 import { useTheme } from '@/hooks/useTheme'
 import ContentBasic from './Basic'
 import ContentHealthBenefit from './HealthBenefit'
@@ -35,12 +33,11 @@ const contentItems = [
 
 export default function ContentLangganan() {
   const [hover, setHover] = useState<number>(-1)
-  const Theme = useTheme()
-  const { colors } = useSelector((state: RootState) => state.theme)
+  const theme = useTheme()
 
   return Column({
     width: '100%',
-    theme: colors,
+    theme: theme.colors,
     boxSizing: 'border-box',
     color: 'theme.background',
     child: Column({
@@ -51,7 +48,7 @@ export default function ContentLangganan() {
             Row({
               children: [
                 Expanded({
-                  backgroundColor: Theme.theme === 'dark' ? 'theme.background' : '#D3D3D3',
+                  backgroundColor: theme.theme === 'dark' ? 'theme.background' : '#D3D3D3',
                   borderRadius: 10,
                   //border: '1px solid theme.border',
                   child: Column({
@@ -77,7 +74,7 @@ export default function ContentLangganan() {
                             child: Container({
                               height: 'auto',
                               padding: 10,
-                              backgroundColor: hover === index ? '#303030' : 'theme.backgroundPaper',
+                              backgroundColor: hover === index ? 'theme.backgroundPaper' : 'theme.background',
                               color: 'theme.color',
                               borderRadius: 10,
                               border: '1px solid theme.border',

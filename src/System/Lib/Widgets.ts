@@ -1026,6 +1026,7 @@ export function Path(props: PropsWidget = {}) {
 
 export function Text(text: string, props: PropsWidget = {}) {
   props.fontColor = 'theme.textPrimary'
+  //props.color = props.color || props.fontColor
   if (props.textColor) {
     props.fontColor = props.textColor
     props.textColor = undefined
