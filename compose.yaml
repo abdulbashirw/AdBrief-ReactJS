@@ -1,50 +1,49 @@
 services:
-  dev:
-    container_name: adbrief-dev
-    image: gcr.io/project-digital-admedika/adbrief-dev:1.0.0
-    build:
-      context: .
-      target: dev
-      platforms:
-        - linux/amd64
-    ports:
-      - '443:443'
-      - '80:80'
-    environment:
-      NODE_ENV: production
-
-  staging:
-    container_name: adbrief-staging
-    image: gcr.io/project-digital-admedika/adbrief-staging:1.0.0
-    build:
-      context: .
-      target: staging
-      platforms:
-        - linux/amd64
-    ports:
-      - '443:443'
-      - '80:80'
-    environment:
-      NODE_ENV: production
-
   prod:
-    container_name: adbrief-prod
     image: gcr.io/project-digital-admedika/adbrief-prod:1.0.0
+    container_name: adbrief-fe
     build:
       context: .
+      dockerfile: Dockerfile
       target: prod
       platforms:
         - linux/amd64
     ports:
-      - '443:443'
-      - '80:80'
+      - "4173:4173"
     environment:
-      NODE_ENV: production
-
-volumes:
-  node_modules:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: node_modules
+      - NODE_ENV=production
+      - PORT=4173
+    env_file:
+      - .env.prod
+  staging:
+    image: gcr.io/project-digital-admedika/adbrief-staging:1.0.0
+    container_name: adbrief-fe
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: staging
+      platforms:
+        - linux/amd64
+    ports:
+      - "4173:4173"
+    environment:
+      - NODE_ENV=staging
+      - PORT=4173
+    env_file:
+      - .env.staging
+  dev:
+    image: gcr.io/project-digital-admedika/adbrief-dev:1.0.0
+    container_name: adbrief-fe
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+      platforms:
+        - linux/amd64
+    ports:
+      - "4173:4173"
+    environment:
+      - NODE_ENV=developement
+      - PORT=4173
+    env_file:
+      - .env.dev

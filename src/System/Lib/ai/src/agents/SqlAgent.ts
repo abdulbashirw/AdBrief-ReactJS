@@ -10,7 +10,7 @@ export default class SqlAgent extends AbstractAgent {
 
   getData(query: string): Promise<string> {
     return new Promise((resolve, reject) => {
-      fetch('http://localhost:80/adbrief/Ai/sql_agent', {
+      fetch('https://adbrief-php-dev-336781009919.asia-southeast2.run.app/Ai/sql_agent', {
         method: 'POST',
         body: JSON.stringify({ data: query }),
       })

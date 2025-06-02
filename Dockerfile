@@ -1,55 +1,63 @@
-# Base image with dependencies
-FROM node:lts-alpine AS base
+FROM node:20.18.1-alpine AS base
 
 WORKDIR /app
 
-# Copy only package.json and yarn.lock initially for efficient caching
-COPY package.json yarn.lock ./
+COPY package*.json ./
 
-# Install npm globally and enable corepack (for managing Yarn versions)
-RUN npm i -g npm && corepack enable
-
-# Pre-build STAGING configuration (common for all environments)
-FROM base AS staging-builder
+RUN npm install
 
 COPY . .
-RUN yarn install
-RUN yarn next telemetry disable
-RUN yarn lint --fix
-RUN yarn build:staging
 
-# Production image (Nginx)
-FROM nginx:stable-alpine AS staging
+# Builder untuk production
+FROM base AS builder-prod
+RUN npm run build
 
-COPY .env.staging .
-COPY --from=staging-builder /app/dist /app/dist
+# Builder untuk staging
+FROM base AS builder-staging
+RUN npm run build -- --mode staging
 
-# Pre-build PROD configuration (common for all environments)
-FROM base AS prod-builder
+# Builder untuk development
+FROM base AS builder-dev
+RUN npm run build -- --mode development
 
-COPY . .
-RUN yarn install
-RUN yarn next telemetry disable
-RUN yarn lint --fix
-RUN yarn build:prod
+# Production environment
+FROM node:20.18.1-alpine AS prod
+WORKDIR /app
 
-# Production image (Nginx)
-FROM nginx:stable-alpine AS prod
+COPY --from=builder-prod /app/dist ./dist
+COPY --from=builder-prod /app/public ./public
+COPY --from=base /app/.env.prod ./.env.prod
 
-COPY .env.prod .
-COPY --from=prod-builder /app/dist /app/dist
+RUN npm install -g serve
 
-# Pre-build DEV configuration (common for all environments)
-FROM base AS dev-builder
+EXPOSE 4173
 
-COPY . .
-RUN yarn install
-RUN yarn next telemetry disable
-RUN yarn lint --fix
-RUN yarn build:dev
+CMD ["serve", "-s", "dist", "-l", "4173"]
 
-# Production image (Nginx)
-FROM nginx:stable-alpine AS dev
+# Staging environment
+FROM node:20.18.1-alpine AS staging
+WORKDIR /app
 
-COPY .env.dev .
-COPY --from=dev-builder /app/dist /app/dist
+COPY --from=builder-staging /app/dist ./dist
+COPY --from=builder-staging /app/public ./public
+COPY --from=base /app/.env.staging ./.env.staging
+
+RUN npm install -g serve
+
+EXPOSE 4173
+
+CMD ["serve", "-s", "dist", "-l", "4173"]
+
+# Staging environment
+FROM node:20.18.1-alpine AS dev
+WORKDIR /app
+
+COPY --from=builder-dev /app/dist ./dist
+# COPY --from=builder-dev /app/public ./public
+COPY --from=base /app/.env.dev ./.env.dev
+
+RUN npm install -g serve
+
+EXPOSE 4173
+
+CMD ["serve", "-s", "dist", "-l", "4173"]

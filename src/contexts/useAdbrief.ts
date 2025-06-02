@@ -144,7 +144,7 @@ const useAdbrief = buildingStore(
   },
   inits => {
     console.log('run init')
-    fetch('http://localhost/adbrief/Ai/prompt')
+    fetch('https://adbrief-php-dev-336781009919.asia-southeast2.run.app/Ai/prompt')
       .then(v => v.text())
       .then(v => {
         inits(v)
